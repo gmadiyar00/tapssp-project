@@ -1,0 +1,22 @@
+[package]
+name = "tapssp-project"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+ndarray = { version = "0.15", features = ["serde"] }
+uuid = { version = "1.4", features = ["v4"] }
+regex = "1.10"
+rustc-hash = "1.1"
+unicode-normalization = "0.1"
+lazy_static = "1.4"
+llama-rs = { version = "0.3.1", features = ["metal"] }  # Use metal for M1/M2 Macs
+dirs = "5.0"
+
+[dev-dependencies]
+tempfile = "3.8"
