@@ -32,12 +32,10 @@ impl VectorDB {
         let id = uuid::Uuid::new_v4().to_string();
         let tokens = self.tokenize(&content);
         
-        // Update vocabulary and document frequencies
         for token in &tokens {
             self.vocabulary.insert(token.clone());
         }
         
-        // Calculate TF-IDF embedding
         let embedding = self.calculate_tfidf(&tokens);
         
         let document = Document {
@@ -84,10 +82,8 @@ impl VectorDB {
             };
         }
 
-        // Normalize text
         let text = text.nfc().collect::<String>().to_lowercase();
         
-        // Remove special characters and split into tokens
         let re = Regex::new(r"[^\w\s]").unwrap();
         let text = re.replace_all(&text, " ");
         
@@ -100,18 +96,15 @@ impl VectorDB {
     fn calculate_tfidf(&self, tokens: &[String]) -> Array1<f32> {
         let mut term_freq = FxHashMap::default();
         
-        // Calculate term frequencies
         for token in tokens {
             *term_freq.entry(token.clone()).or_insert(0.0) += 1.0;
         }
         
-        // Normalize term frequencies
         let tokens_count = tokens.len() as f32;
         for freq in term_freq.values_mut() {
             *freq /= tokens_count;
         }
         
-        // Calculate TF-IDF vector
         let vocab_size = self.vocabulary.len();
         let mut tfidf = vec![0.0; vocab_size];
         

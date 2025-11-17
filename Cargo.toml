@@ -15,7 +15,6 @@ regex = "1.10"
 rustc-hash = "1.1"
 unicode-normalization = "0.1"
 lazy_static = "1.4"
-llama-rs = { version = "0.3.1", features = ["metal"] }  # Use metal for M1/M2 Macs
 dirs = "5.0"
 
 [dev-dependencies]

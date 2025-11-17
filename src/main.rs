@@ -7,8 +7,9 @@ use anyhow::Result;
 use llm::{LLM, LLMConfig};
 use retriever::Retriever;
 use std::{env, fs};
+use std::io::Write;
 
-async fn load_documents(retriever: &mut Retriever, docs_dir: &str) -> Result<()> {
+fn load_documents(retriever: &mut Retriever, docs_dir: &str) -> Result<()> {
     for entry in fs::read_dir(docs_dir)? {
         let entry = entry?;
         let path = entry.path();
@@ -21,14 +22,12 @@ async fn load_documents(retriever: &mut Retriever, docs_dir: &str) -> Result<()>
 }
 
 fn main() -> Result<()> {
-    // Initialize LLM with default config (will download model if needed)
     let config = LLMConfig::default();
     println!("Initializing LLM (first run will download the model)...");
     let llm = LLM::new(config)?;
     
     let mut retriever = Retriever::new();
 
-    // Load documents from a directory
     let docs_dir = env::args()
         .nth(1)
         .unwrap_or_else(|| "docs".to_string());
@@ -41,11 +40,10 @@ fn main() -> Result<()> {
     println!("RAG System initialized! Enter your questions (Ctrl+C to exit)");
     println!("Using Mistral 7B for local inference - no API key needed!");
 
-    // Interactive query loop
     loop {
         let mut query = String::new();
-        print!("> ");
-        std::io::Write::flush(&mut std::io::stdout())?;
+            print!("> ");
+            std::io::stdout().flush()?;
         
         if std::io::stdin().read_line(&mut query)? == 0 {
             break; // EOF (Ctrl+D)
@@ -56,10 +54,8 @@ fn main() -> Result<()> {
             continue;
         }
 
-        // Retrieve relevant context
         let relevant_chunks = retriever.retrieve(query, 3);
         
-        // Generate and print response
         print!("\nThinking...");
         std::io::stdout().flush()?;
         match llm.generate_response(query, relevant_chunks) {

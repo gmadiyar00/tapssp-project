@@ -1,81 +1,65 @@
-use anyhow::{Result, anyhow};
-use llama_rs::{
-    Model, ModelParams, InferenceParams, InferenceSession,
-    InferenceRequest, InferenceResponse, TokenId
-};
-use std::{path::PathBuf, sync::Arc};
-use std::io::Write;
-
+use anyhow::{anyhow, Result};
+use std::process::{Command, Stdio};
+use std::path::Path;
+use std::env;
 pub struct LLMConfig {
-    pub model_path: Option<PathBuf>,
+    pub llama_bin: String,
+    pub model_path: String,
     pub max_tokens: usize,
-    pub temperature: f32,
-    pub top_p: f32,
-    pub repeat_penalty: f32,
+    pub threads: Option<usize>,
 }
 
 impl Default for LLMConfig {
     fn default() -> Self {
+        let home = env::var("HOME").unwrap_or_else(|_| "~".to_string());
+        let default_model = format!("{}/.cache/tapssp-project/models/llama-3.1-8b-instruct.Q4_K_M.gguf", home);
         Self {
-            model_path: None,
-            max_tokens: 1000,
-            temperature: 0.7,
-            top_p: 0.9,
-            repeat_penalty: 1.1,
+            // keep default as a relative path but LLM::new will try env/PATH fallbacks
+            llama_bin: "./llama.cpp/main".to_string(),
+            model_path: default_model,
+            max_tokens: 256,
+            threads: None,
         }
     }
 }
 
 pub struct LLM {
-    model: Arc<Model>,
-    config: LLMConfig,
+    cfg: LLMConfig,
 }
 
 impl LLM {
-    pub fn new(mut config: LLMConfig) -> Result<Self> {
-        // If model path not provided, download and use default model
-        if config.model_path.is_none() {
-            config.model_path = Some(Self::get_default_model()?);
+    pub fn new(cfg: LLMConfig) -> Result<Self> {
+        // Resolve llama binary: check provided path, then env var, then PATH and common locations
+        let mut tried_bins = Vec::new();
+        let resolved_bin = find_executable(&cfg.llama_bin, &mut tried_bins);
+
+        let mut tried_models = Vec::new();
+        let resolved_model = find_model(&cfg.model_path, &mut tried_models);
+
+        match (resolved_bin, resolved_model) {
+            (Some(bin), Some(model)) => {
+                let mut cfg = cfg;
+                cfg.llama_bin = bin;
+                cfg.model_path = model;
+                Ok(LLM { cfg })
+            }
+            (None, None) => Err(anyhow!("llama binary not found (tried: {}) and model file not found (tried: {})", tried_bins.join(", "), tried_models.join(", "))),
+            (None, _) => Err(anyhow!("llama binary not found. Tried: {}", tried_bins.join(", "))),
+            (_, None) => Err(anyhow!("model file not found. Tried: {}", tried_models.join(", "))),
         }
-
-        let model_path = config.model_path.as_ref()
-            .ok_or_else(|| anyhow!("Model path not set"))?;
-
-        if !model_path.exists() {
-            return Err(anyhow!("Model file not found at {:?}", model_path));
-        }
-
-        let model_params = ModelParams::default();
-        let model = Model::load(&model_path, model_params)?;
-
-        Ok(LLM {
-            model: Arc::new(model),
-            config,
-        })
     }
 
-    fn get_default_model() -> Result<PathBuf> {
-        let models_dir = dirs::cache_dir()
-            .ok_or_else(|| anyhow!("Could not determine cache directory"))?
-            .join("tapssp-project")
-            .join("models");
-
-        std::fs::create_dir_all(&models_dir)?;
-        
-        let model_path = models_dir.join("mistral-7b-instruct-v0.1.Q4_K_M.gguf");
-        
-        if !model_path.exists() {
-            println!("Downloading Mistral 7B model...");
-            // Download model from HuggingFace
-            let url = "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_K_M.gguf";
-            let response = reqwest::blocking::get(url)?;
-            let mut file = std::fs::File::create(&model_path)?;
-            let mut content = std::io::Cursor::new(response.bytes()?);
-            std::io::copy(&mut content, &mut file)?;
-            println!("Model downloaded successfully!");
+    fn construct_prompt(&self, query: &str, context: Vec<String>) -> String {
+        if context.is_empty() {
+            return query.to_string();
         }
 
-        Ok(model_path)
+        let context_str = context.join("\n\n");
+        format!(
+            "Using the following context to answer the question:\n\n{}\n\nQuestion: {}\n\nAnswer:",
+            context_str,
+            query
+        )
     }
 
     pub fn generate_response(&self, query: &str, context: Vec<String>) -> Result<String> {
@@ -84,48 +68,107 @@ impl LLM {
         }
 
         let prompt = self.construct_prompt(query, context);
-        
-        let inference_params = InferenceParams {
-            n_threads: num_cpus::get(),  // Use all available CPU cores
-            n_tokens: self.config.max_tokens,
-            temperature: self.config.temperature,
-            top_p: self.config.top_p,
-            repeat_penalty: self.config.repeat_penalty,
-            ..InferenceParams::default()
-        };
 
-        let mut session = InferenceSession::new(
-            self.model.clone(),
-            inference_params,
-        )?;
+        let mut cmd = Command::new(&self.cfg.llama_bin);
+        cmd.arg("-m").arg(&self.cfg.model_path);
+        cmd.arg("-p").arg(&prompt);
+        cmd.arg("-n").arg(self.cfg.max_tokens.to_string());
 
-        let mut response = String::new();
-        let mut tokens = session.infer::<std::io::Stdout>(
-            InferenceRequest::from_prompt(prompt),
-            |r| match r {
-                InferenceResponse::InferredToken(token) => {
-                    response.push_str(&token);
-                    Ok(())
+        if let Some(t) = self.cfg.threads {
+            cmd.arg("-t").arg(t.to_string());
+        }
+
+        let output = cmd
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .output()?;
+
+        if !output.status.success() {
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            return Err(anyhow!("llama binary failed: {}", stderr));
+        }
+
+        let stdout = String::from_utf8_lossy(&output.stdout).to_string();
+        Ok(stdout)
+    }
+}
+
+fn expand_home(path: &str) -> String {
+    if path.starts_with("~") {
+        if let Ok(home) = env::var("HOME") {
+            return path.replacen("~", &home, 1);
+        }
+    }
+    path.to_string()
+}
+
+fn find_executable(provided: &str, tried: &mut Vec<String>) -> Option<String> {
+    // 1) Provided path
+    let p = expand_home(provided);
+    tried.push(p.clone());
+    if Path::new(&p).exists() {
+        return Some(p);
+    }
+
+    // 2) env var TAPSSP_LLAMA_BIN
+    if let Ok(env_bin) = env::var("TAPSSP_LLAMA_BIN") {
+        let env_bin_exp = expand_home(&env_bin);
+        tried.push(env_bin_exp.clone());
+        if Path::new(&env_bin_exp).exists() {
+            return Some(env_bin_exp);
+        }
+    }
+
+    // 3) Search PATH for common binary names
+    if let Ok(path_var) = env::var("PATH") {
+        for dir in path_var.split(':') {
+            for name in ["main", "llama", "llama-main"] {
+                let cand = format!("{}/{}", dir, name);
+                tried.push(cand.clone());
+                if Path::new(&cand).exists() {
+                    return Some(cand);
                 }
-                InferenceResponse::EotToken => Ok(()),
-            },
-        )?;
-
-        Ok(response)
+            }
+        }
     }
 
-    fn construct_prompt(&self, query: &str, context: Vec<String>) -> String {
-        let context_str = if context.is_empty() {
-            String::new()
-        } else {
-            format!(
-                "Using the following context to answer the question:\n\n{}\n\n",
-                context.join("\n\n")
-            )
-        };
-
-        format!(
-            "<s>[INST] {context_str}Question: {query} [/INST]",
-        )
+    // 4) Common project locations
+    for cand in ["./llama.cpp/main", "./build/main", "./main", "./llama"] {
+        let cand_exp = expand_home(cand);
+        tried.push(cand_exp.clone());
+        if Path::new(&cand_exp).exists() {
+            return Some(cand_exp);
+        }
     }
+
+    None
+}
+
+fn find_model(provided: &str, tried: &mut Vec<String>) -> Option<String> {
+    // 1) provided
+    let p = expand_home(provided);
+    tried.push(p.clone());
+    if Path::new(&p).exists() {
+        return Some(p);
+    }
+
+    // 2) env var
+    if let Ok(env_m) = env::var("TAPSSP_MODEL_PATH") {
+        let m = expand_home(&env_m);
+        tried.push(m.clone());
+        if Path::new(&m).exists() {
+            return Some(m);
+        }
+    }
+
+    // 3) common cache location
+    if let Ok(home) = env::var("HOME") {
+        let cand = format!("{}/.cache/tapssp-project/models/llama-3.1-8b-instruct.Q4_K_M.gguf", home);
+        tried.push(cand.clone());
+        if Path::new(&cand).exists() {
+            return Some(cand);
+        }
+    }
+
+    None
 }

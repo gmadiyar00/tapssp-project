@@ -2,7 +2,6 @@ use std::fs::{self, DirBuilder};
 use std::path::Path;
 use anyhow::Result;
 
-/// Creates a directory if it doesn't exist
 pub fn ensure_dir(path: impl AsRef<Path>) -> Result<()> {
     DirBuilder::new()
         .recursive(true)
@@ -10,13 +9,11 @@ pub fn ensure_dir(path: impl AsRef<Path>) -> Result<()> {
     Ok(())
 }
 
-/// Splits text into chunks of approximately max_chars length at sentence boundaries
 pub fn split_into_chunks(text: &str, max_chars: usize) -> Vec<String> {
     let mut chunks = Vec::new();
     let mut current_chunk = String::new();
     let mut current_length = 0;
 
-    // Simple sentence splitting on .!?
     for sentence in text.split(|c| c == '.' || c == '!' || c == '?') {
         let sentence = sentence.trim();
         if sentence.is_empty() {
@@ -46,7 +43,6 @@ pub fn split_into_chunks(text: &str, max_chars: usize) -> Vec<String> {
     chunks
 }
 
-/// Loads all text files from a directory recursively
 pub fn load_text_files(dir_path: impl AsRef<Path>) -> Result<Vec<String>> {
     let mut texts = Vec::new();
     
