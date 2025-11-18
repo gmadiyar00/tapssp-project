@@ -1,41 +1,52 @@
 use anyhow::Result;
 use ndarray::Array1;
 use regex::Regex;
-use rustc_hash::{FxHashMap, FxHashSet};
+use rustc_hash::FxHashMap;
+use rustc_hash::FxHashSet;
 use std::collections::HashMap;
 use unicode_normalization::UnicodeNormalization;
 use lazy_static::lazy_static;
+use serde::{Deserialize, Serialize};
+use std::fs::File;
+use std::path::Path;
+use bincode;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Document {
     pub id: String,
     pub content: String,
     pub embedding: Array1<f32>,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct VectorDB {
     documents: HashMap<String, Document>,
-    vocabulary: FxHashSet<String>,
-    idf_values: FxHashMap<String, f32>,
+    vocabulary: Vec<String>,
+    term_to_index: HashMap<String, usize>,
+    idf_values: HashMap<String, f32>,
 }
 
 impl VectorDB {
     pub fn new() -> Self {
         VectorDB {
             documents: HashMap::new(),
-            vocabulary: FxHashSet::default(),
-            idf_values: FxHashMap::default(),
+            vocabulary: Vec::new(),
+            term_to_index: HashMap::new(),
+            idf_values: HashMap::new(),
         }
     }
 
     pub fn add_document(&mut self, content: String) -> Result<()> {
         let id = uuid::Uuid::new_v4().to_string();
         let tokens = self.tokenize(&content);
-        
         for token in &tokens {
-            self.vocabulary.insert(token.clone());
+            if !self.term_to_index.contains_key(token) {
+                let idx = self.vocabulary.len();
+                self.vocabulary.push(token.clone());
+                self.term_to_index.insert(token.clone(), idx);
+            }
         }
-        
+
         let embedding = self.calculate_tfidf(&tokens);
         
         let document = Document {
@@ -107,11 +118,11 @@ impl VectorDB {
         
         let vocab_size = self.vocabulary.len();
         let mut tfidf = vec![0.0; vocab_size];
-        
-        for (i, term) in self.vocabulary.iter().enumerate() {
-            if let Some(tf) = term_freq.get(term) {
+
+        for (term, tf) in term_freq.iter() {
+            if let Some(&i) = self.term_to_index.get(term) {
                 if let Some(idf) = self.idf_values.get(term) {
-                    tfidf[i] = tf * idf;
+                    tfidf[i] = *tf * idf;
                 }
             }
         }
@@ -121,15 +132,26 @@ impl VectorDB {
 
     fn update_idf_values(&mut self) {
         let doc_count = self.documents.len() as f32;
-        
         for term in &self.vocabulary {
             let doc_freq = self.documents.values()
                 .filter(|doc| self.tokenize(&doc.content).contains(term))
                 .count() as f32;
-            
+
             let idf = (1.0 + doc_count / (1.0 + doc_freq)).ln();
             self.idf_values.insert(term.clone(), idf);
         }
+    }
+
+    pub fn save<P: AsRef<Path>>(&self, path: P) -> Result<()> {
+        let file = File::create(path)?;
+        bincode::serialize_into(file, self)?;
+        Ok(())
+    }
+
+    pub fn load<P: AsRef<Path>>(path: P) -> Result<Self> {
+        let file = File::open(path)?;
+        let db: VectorDB = bincode::deserialize_from(file)?;
+        Ok(db)
     }
 
     fn cosine_similarity(&self, a: &Array1<f32>, b: &Array1<f32>) -> f32 {

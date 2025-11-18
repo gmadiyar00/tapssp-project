@@ -15,7 +15,16 @@ fn load_documents(retriever: &mut Retriever, docs_dir: &str) -> Result<()> {
         let path = entry.path();
         if path.is_file() && path.extension().map_or(false, |ext| ext == "txt") {
             let content = fs::read_to_string(path)?;
-            retriever.add_to_knowledge_base(content)?;
+            // If file is large, split into chunks and add each chunk separately so the
+            // retriever stores reasonably-sized documents. Default chunk size: 2000 chars.
+            if content.chars().count() > 2000 {
+                let chunks = utils::split_into_chunks(&content, 2000);
+                for chunk in chunks {
+                    retriever.add_to_knowledge_base(chunk)?;
+                }
+            } else {
+                retriever.add_to_knowledge_base(content)?;
+            }
         }
     }
     Ok(())

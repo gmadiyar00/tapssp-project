@@ -7,6 +7,11 @@ pub struct LLMConfig {
     pub model_path: String,
     pub max_tokens: usize,
     pub threads: Option<usize>,
+    /// Extra args to pass to the llama.cpp binary (e.g. ["--device","none"]).
+    /// Can be set via the `TAPSSP_LLAMA_ARGS` env var (space-separated).
+    pub args: Vec<String>,
+    /// Context size (max tokens) for the model; used to trim context to fit the model.
+    pub ctx_size: usize,
 }
 
 impl Default for LLMConfig {
@@ -19,6 +24,8 @@ impl Default for LLMConfig {
             model_path: default_model,
             max_tokens: 256,
             threads: None,
+            args: Vec::new(),
+            ctx_size: 4096,
         }
     }
 }
@@ -41,6 +48,18 @@ impl LLM {
                 let mut cfg = cfg;
                 cfg.llama_bin = bin;
                 cfg.model_path = model;
+
+                // If the TAPSSP_LLAMA_ARGS env var is set, parse it into args (simple whitespace split).
+                if let Ok(extra) = env::var("TAPSSP_LLAMA_ARGS") {
+                    let parts: Vec<String> = extra
+                        .split_whitespace()
+                        .map(|s| s.to_string())
+                        .collect();
+                    if !parts.is_empty() {
+                        cfg.args = parts;
+                    }
+                }
+
                 Ok(LLM { cfg })
             }
             (None, None) => Err(anyhow!("llama binary not found (tried: {}) and model file not found (tried: {})", tried_bins.join(", "), tried_models.join(", "))),
@@ -50,11 +69,37 @@ impl LLM {
     }
 
     fn construct_prompt(&self, query: &str, context: Vec<String>) -> String {
+        // If no context, just ask the question.
         if context.is_empty() {
-            return query.to_string();
+            return format!("Question: {}\n\nAnswer:", query);
         }
 
-        let context_str = context.join("\n\n");
+        // Estimate tokens by characters (approx 4 chars per token). This is coarse
+        // but prevents overlong prompts when a true tokenizer isn't available.
+        let avg_chars_per_token = 4.0_f32;
+        let mut allowed_tokens = if self.cfg.ctx_size > self.cfg.max_tokens {
+            self.cfg.ctx_size - self.cfg.max_tokens
+        } else {
+            // if misconfigured, leave a small room
+            64
+        };
+
+        // reserve some tokens for prompt overhead
+        if allowed_tokens > 64 { allowed_tokens -= 64; }
+
+        let mut included = Vec::new();
+        let mut used_tokens: usize = 0;
+
+        for chunk in context.iter() {
+            let est = ((chunk.chars().count() as f32) / avg_chars_per_token).ceil() as usize;
+            if used_tokens + est > allowed_tokens {
+                break; // stop adding more chunks
+            }
+            included.push(chunk.clone());
+            used_tokens += est;
+        }
+
+        let context_str = included.join("\n\n");
         format!(
             "Using the following context to answer the question:\n\n{}\n\nQuestion: {}\n\nAnswer:",
             context_str,
@@ -76,6 +121,11 @@ impl LLM {
 
         if let Some(t) = self.cfg.threads {
             cmd.arg("-t").arg(t.to_string());
+        }
+
+        // Append any extra args the user provided (e.g. --device none)
+        for a in &self.cfg.args {
+            cmd.arg(a);
         }
 
         let output = cmd
