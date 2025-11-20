@@ -163,62 +163,7 @@ impl VectorDB {
         let db: VectorDB = bincode::deserialize_from(file)?;
         Ok(db)
     }
-
-    pub fn doc_count(&self) -> usize {
-        self.doc_count
-    }
-
-    pub fn vocab_size(&self) -> usize {
-        self.term_doc_freq.len()
-    }
-
-    /// Compact DB by removing duplicate documents and rebuilding postings
-    pub fn compact(&mut self) {
-        if self.documents.is_empty() {
-            return;
-        }
-        let mut seen: HashSet<String> = HashSet::new();
-        let mut new_docs: HashMap<String, Document> = HashMap::new();
-        for (id, doc) in self.documents.iter() {
-            if seen.contains(&doc.content_hash) {
-                continue;
-            }
-            seen.insert(doc.content_hash.clone());
-            new_docs.insert(id.clone(), doc.clone());
-        }
-
-        let mut postings: HashMap<String, Vec<(String, f32)>> = HashMap::new();
-        let mut term_doc_freq: HashMap<String, usize> = HashMap::new();
-        for (id, doc) in new_docs.iter() {
-            for term in doc.term_freq.keys() {
-                postings
-                    .entry(term.clone())
-                    .or_insert_with(Vec::new)
-                    .push((id.clone(), *doc.term_freq.get(term).unwrap_or(&0.0)));
-            }
-            for term in doc.term_freq.keys() {
-                *term_doc_freq.entry(term.clone()).or_insert(0) += 1;
-            }
-        }
-
-        self.documents = new_docs;
-        self.postings = postings;
-        self.term_doc_freq = term_doc_freq;
-        self.doc_hashes = seen;
-        self.doc_count = self.documents.len();
-    }
-
-    pub fn sample_docs(&self, n: usize) -> Vec<(String, String)> {
-        self.documents
-            .values()
-            .take(n)
-            .map(|d| {
-                let preview = if d.content.len() > 200 { format!("{}...", &d.content[..200]) } else { d.content.clone() };
-                (d.id.clone(), preview)
-            })
-            .collect()
-    }
-
+    
     fn tokenize(text: &str) -> Vec<String> {
         lazy_static! {
             static ref STOP_WORDS: HashSet<&'static str> = {
