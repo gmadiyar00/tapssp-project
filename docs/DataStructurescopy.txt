@@ -1,0 +1,2903 @@
+Data Structures
+And
+Algorithms
+Made Easy In JAVA
+Data Structures and Algorithmic Puzzles
+
+By
+Narasimha Karumanchi
+
+Copyright ©2017 by CareerMonk.com
+All rights reserved.
+Designed by Narasimha Karumanchi
+
+Copyright ©2017 CareerMonk Publications. All rights reserved.
+All rights reserved. No part of this book may be reproduced in any form or by any electronic or mechanical means, including
+information storage and retrieval systems, without written permission from the publisher or author.
+
+Acknowledgements
+Mother and Father, it is impossible to thank you adequately for everything you have done, from
+loving me unconditionally to raising me in a stable household, where your persistent efforts and
+traditional values taught your children to celebrate and embrace life. I could not have asked for
+better parents or role-models. You showed me that anything is possible with faith, hard work and
+determination.
+This book would not have been possible without the help of many people. I would like to express
+my gratitude to all of the people who provided support, talked things over, read, wrote, offered
+comments, allowed me to quote their remarks and assisted in the editing, proofreading and design.
+In particular, I would like to thank the following individuals:
+■
+■
+■
+■
+■
+■
+■
+■
+■
+■
+
+Mohan Mullapudi, IIT Bombay, Architect, dataRPM Pvt. Ltd.
+Navin Kumar Jaiswal, Senior Consultant, Juniper Networks Inc.
+A. Vamshi Krishna, IIT Kanpur, Mentor Graphics Inc.
+Kondrakunta Murali Krishna, B-Tech., Technical Lead, HCL
+Cathy Reed, BA, MA, Copy Editor
+Prof. Girish P. Saraph, Founder, Vegayan Systems, IIT Bombay
+Kishore Kumar Jinka, IIT Bombay
+Prof. Hsin – mu Tsai, National Taiwan University, Taiwan
+Prof. Chintapalli Sobhan Babu. IIT, Hyderabad
+Prof. Meda Sreenivasa Rao, JNTU, Hyderabad
+
+Last but not least, I would like to thank the Directors of Guntur Vikas College, Prof. Y.V. Gopala
+Krishna Murthy & Prof. Ayub Khan [ACE Engineering Academy], T.R.C.Bose [Ex. Director of
+APTransco], Ch.Venkateswara Rao VNR Vignanajyothi [Engineering College, Hyderabad],
+Ch.Venkata Narasaiah [IPS], Yarapathineni Lakshmaiah [Manchikallu, Gurazala], & all our
+well – wishers for helping me and my family during our studies.
+-Narasimha Karumanchi
+M-Tech, IIT Bombay
+Founder, CareerMonk.com
+
+Preface
+Dear Reader,
+Please hold on! I know many people typically do not read the Preface of a book. But I strongly
+recommend that you read this particular Preface.
+It is not the main objective of this book to present you with the theorems and proofs on data
+structures and algorithms. I have followed a pattern of improving the problem solutions with
+different complexities (for each problem, you will find multiple solutions with different, and
+reduced, complexities). Basically, it’s an enumeration of possible solutions. With this approach,
+even if you get a new question, it will show you a way to think about the possible solutions. You
+will find this book useful for interview preparation, competitive exams preparation, and campus
+interview preparations.
+As a job seeker, if you read the complete book, I am sure you will be able to challenge the
+interviewers. If you read it as an instructor, it will help you to deliver lectures with an approach
+that is easy to follow, and as a result your students will appreciate the fact that they have opted for
+Computer Science / Information Technology as their degree.
+This book is also useful for Engineering degree students and Masters degree students during
+their academic preparations. In all the chapters you will see that there is more emphasis on
+problems and their analysis rather than on theory. In each chapter, you will first read about the
+basic required theory, which is then followed by a section on problem sets. In total, there are
+approximately 700 algorithmic problems, all with solutions.
+If you read the book as a student preparing for competitive exams for Computer Science /
+Information Technology, the content covers all the required topics in full detail. While writing
+this book, my main focus was to help students who are preparing for these exams.
+In all the chapters you will see more emphasis on problems and analysis rather than on theory. In
+each chapter, you will first see the basic required theory followed by various problems.
+For many problems, multiple solutions are provided with different levels of complexity. We start
+with the brute force solution and slowly move toward the best solution possible for that problem.
+For each problem, we endeavor to understand how much time the algorithm takes and how much
+memory the algorithm uses.
+
+It is recommended that the reader does at least one complete reading of this book to gain a full
+understanding of all the topics that are covered. Then, in subsequent readings you can skip
+directly to any chapter to refer to a specific topic. Even though many readings have been done for
+the purpose of correcting errors, there could still be some minor typos in the book. If any are
+found, they will be updated at www.CareerMonk.com. You can monitor this site for any
+corrections and also for new problems and solutions. Also, please provide your valuable
+suggestions at: Info@CareerMonk.com.
+I wish you all the best and I am confident that you will find this book useful.
+-Narasimha Karumanchi
+M-Tech, IIT Bombay
+Founder, CareerMonk.com
+
+Other Books by Narasimha Karumanchi
+IT Interview Questions
+Elements of Computer Networking
+Data Structures and Algorithmic Thinking with Python
+Data Structures and Algorithms Made Easy (C/C++)
+Coding Interview Questions
+Data Structures and Algorithms for GATE
+Peeling Design Patterns
+
+Table of Contents
+1.
+
+Introduction
+1.1
+
+Variables
+
+1.2
+
+Data Types
+
+1.3
+
+Data Structure
+
+1.4
+
+Abstract Data Types (ADTs)
+
+1.5
+1.6
+
+What is an Algorithm?
+Why the Analysis of Algorithms?
+
+1.7
+
+Goal of the Analysis of Algorithms
+
+1.8
+
+What is Running Time Analysis?
+
+1.9 How to Compare Algorithms
+1.10 What is Rate of Growth?
+1.11 Commonly used Rates of Growth
+1.12 Types of Analysis
+1.13 Asymptotic Notation
+1.14 Big-O Notation
+1.15 Omega-Ω Notation
+1.16 Theta-Θ Notation
+1.17 Important Notes
+1.18 Why is it called Asymptotic Analysis?
+1.19 Guidelines for Asymptotic Analysis
+1.20 Properties of Notations
+1.21 Commonly used Logarithms and Summations
+1.22 Master Theorem for Divide and Conquer
+1.23 Divide and Conquer Master Theorem: Problems & Solutions
+1.24 Master Theorem for Subtract and Conquer Recurrences
+1.25 Variant of Subtraction and Conquer Master Theorem
+1.26 Method of Guessing and Confirming
+
+1.27 Amortized Analysis
+1.28 Algorithms Analysis: Problems & Solutions
+2. Recursion and Backtracking
+2.1
+2.2
+
+Introduction
+What is Recursion?
+
+2.3
+
+Why Recursion?
+
+2.4
+2.5
+
+Format of a Recursive Function
+Recursion and Memory (Visualization)
+
+2.6
+
+Recursion versus Iteration
+
+2.7
+
+Notes on Recursion
+
+2.8
+2.9
+
+Example Algorithms of Recursion
+Recursion: Problems & Solutions
+
+2.10 What is Backtracking?
+2.11 Example Algorithms of Backtracking
+2.12 Backtracking: Problems & Solutions
+3. Linked Lists
+3.1 What is a Linked List?
+3.2
+
+Linked Lists ADT
+
+3.3
+
+Why Linked Lists?
+
+3.4
+3.5
+
+Arrays Overview
+Comparison of Linked Lists with Arrays & Dynamic Arrays
+
+3.6
+
+Singly Linked Lists
+
+3.7
+3.8
+
+Doubly Linked Lists
+Circular Linked Lists
+
+3.9
+
+A Memory-efficient Doubly Linked List
+
+3.10 Unrolled Linked Lists
+3.11 Skip Lists
+3.12 Linked Lists: Problems & Solutions
+4. Stacks
+4.1
+
+What is a Stack?
+
+4.2
+
+How Stacks are used
+
+4.3
+
+Stack ADT
+
+4.4
+
+Exceptions
+
+4.5
+4.6
+
+Applications
+Implementation
+
+4.7
+
+Comparison of Implementations
+
+4.8
+
+Stacks: Problems & Solutions
+
+5. Queues
+5.1
+5.2
+
+What is a Queue?
+How are Queues Used
+
+5.3
+
+Queue ADT
+
+5.4
+
+Exceptions
+
+5.5
+5.6
+
+Applications
+Implementation
+
+5.7
+
+Queues: Problems & Solutions
+
+6. Trees
+6.1
+
+What is a Tree?
+
+6.2
+6.3
+
+Glossary
+Binary Trees
+
+6.4
+
+Binary Tree Traversals
+
+6.5
+
+Generic Trees (N-ary Trees)
+
+6.6
+6.7
+
+Threaded Binary Tree Traversals (Stack or Queue-less Traversals)
+Expression Trees
+
+6.8
+
+XOR Trees
+
+6.9 Binary Search Trees (BSTs)
+6.10 Balanced Binary Search Trees
+6.11 AVL (Adelson-Velskii and Landis) Trees
+6.12 Other Variations on Trees
+7. Priority Queues and Heaps
+7.1
+7.2
+
+What is a Priority Queue?
+Priority Queue ADT
+
+7.3
+
+Priority Queue Applications
+
+7.4
+
+Priority Queue Implementations
+
+7.5
+
+Heaps and Binary Heaps
+
+7.6
+
+Binary Heaps
+
+7.7
+
+Priority Queues [Heaps]: Problems & Solutions
+
+8. Disjoint Sets ADT
+8.1
+8.2
+
+Introduction
+Equivalence Relations and Equivalence Classes
+
+8.3
+
+Disjoint Sets ADT
+
+8.4
+8.5
+
+Applications
+Tradeoffs in Implementing Disjoint Sets ADT
+
+8.6
+
+Fast UNION Implementation (Slow FIND)
+
+8.7
+
+Fast UNION Implementations (Quick FIND)
+
+8.8
+8.9
+
+Path Compression
+Summary
+
+8.10 Disjoint Sets: Problems & Solutions
+9. Graph Algorithms
+9.1
+
+Introduction
+
+9.2
+9.3
+
+Glossary
+Applications of Graphs
+
+9.4
+
+Graph Representation
+
+9.5
+
+Graph Traversals
+
+9.6
+9.7
+
+Topological Sort
+Shortest Path Algorithms
+
+9.8
+
+Minimal Spanning Tree
+
+9.9
+
+Graph Algorithms: Problems & Solutions
+
+10. Sorting
+10.1
+10.2
+
+What is Sorting?
+Why is Sorting Necessary?
+
+10.3
+
+Classification of Sorting Algorithms
+
+10.4
+10.5
+
+Other Classifications
+Bubble Sort
+
+10.6
+
+Selection Sort
+
+10.7
+
+Insertion Sort
+
+10.8
+
+Shell Sort
+
+10.9
+
+Merge Sort
+
+10.10 Heap Sort
+10.11 Quick Sort
+10.12 Tree Sort
+10.13 Comparison of Sorting Algorithms
+10.14 Linear Sorting Algorithms
+10.15 Counting Sort
+10.16 Bucket Sort (or Bin Sort)
+10.17 Radix Sort
+10.18 Topological Sort
+10.19 External Sorting
+10.20 Sorting: Problems & Solutions
+11. Searching
+11.1
+
+What is Searching?
+
+11.2
+11.3
+
+Why do we need Searching?
+Types of Searching
+
+11.4
+
+Unordered Linear Search
+
+11.5
+11.6
+
+Sorted/Ordered Linear Search
+Binary Search
+
+11.7
+
+Interpolation Search
+
+11.8
+
+Comparing Basic Searching Algorithms
+
+11.9 Symbol Tables and Hashing
+11.10 String Searching Algorithms
+11.11 Searching: Problems & Solutions
+12. Selection Algorithms [Medians]
+12.1
+
+What are Selection Algorithms?
+
+12.2
+12.3
+
+Selection by Sorting
+Partition-based Selection Algorithm
+
+12.4
+
+Linear Selection Algorithm - Median of Medians Algorithm
+
+12.5
+12.6
+
+Finding the K Smallest Elements in Sorted Order
+Selection Algorithms: Problems & Solutions
+
+13. Symbol Tables
+
+13.1
+
+Introduction
+
+13.2
+13.3
+
+What are Symbol Tables?
+Symbol Table Implementations
+
+13.4
+
+Comparison Table of Symbols for Implementations
+
+14. Hashing
+14.1
+
+What is Hashing?
+
+14.2
+14.3
+
+Why Hashing?
+HashTable ADT
+
+14.4
+
+Understanding Hashing
+
+14.5
+
+Components of Hashing
+
+14.6
+14.7
+
+Hash Table
+Hash Function
+
+14.8
+
+Load Factor
+
+14.9
+
+Collisions
+
+14.10 Collision Resolution Techniques
+14.11 Separate Chaining
+14.12 Open Addressing
+14.13 Comparison of Collision Resolution Techniques
+14.14 How Hashing Gets O(1) Complexity?
+14.15 Hashing Techniques
+14.16 Problems for which Hash Tables are not suitable
+14.17 Bloom Filters
+14.18 Hashing: Problems & Solutions
+15. String Algorithms
+15.1
+
+Introduction
+
+15.2
+
+String Matching Algorithms
+
+15.3
+15.4
+
+Brute Force Method
+Rabin-Karp String Matching Algorithm
+
+15.5
+
+String Matching with Finite Automata
+
+15.6
+15.7
+
+KMP Algorithm
+Boyer-Moore Algorithm
+
+15.8
+
+Data Structures for Storing Strings
+
+15.9
+
+Hash Tables for Strings
+
+15.10 Binary Search Trees for Strings
+15.11 Tries
+15.12 Ternary Search Trees
+15.13 Comparing BSTs, Tries and TSTs
+15.14 Suffix Trees
+15.15 String Algorithms: Problems & Solutions
+16. Algorithms Design Techniques
+16.1
+
+Introduction
+
+16.2
+
+Classification
+
+16.3
+16.4
+
+Classification by Implementation Method
+Classification by Design Method
+
+16.5
+
+Other Classifications
+
+17. Greedy Algorithms
+17.1
+
+Introduction
+
+17.2
+17.3
+
+Greedy Strategy
+Elements of Greedy Algorithms
+
+17.4
+
+Does Greedy Always Work?
+
+17.5
+
+Advantages and Disadvantages of Greedy Method
+
+17.6
+17.7
+
+Greedy Applications
+Understanding Greedy Technique
+
+17.8
+
+Greedy Algorithms: Problems & Solutions
+
+18. Divide and Conquer Algorithms
+18.1
+
+Introduction
+
+18.2
+18.3
+
+What is Divide and Conquer Strategy?
+Does Divide and Conquer Always Work?
+
+18.4
+
+Divide and Conquer Visualization
+
+18.5
+18.6
+
+Understanding Divide and Conquer
+Advantages of Divide and Conquer
+
+18.7
+
+Disadvantages of Divide and Conquer
+
+18.8
+
+Master Theorem
+
+18.9
+
+Divide and Conquer Applications
+
+18.10 Divide and Conquer: Problems & Solutions
+19. Dynamic Programming
+19.1
+
+Introduction
+
+19.2
+19.3
+
+What is Dynamic Programming Strategy?
+Properties of Dynamic Programming Strategy
+
+19.4
+
+Can Dynamic Programming Solve All Problems?
+
+19.5
+19.6
+
+Dynamic Programming Approaches
+Examples of Dynamic Programming Algorithms
+
+19.7
+
+Understanding Dynamic Programming
+
+19.8
+
+Dynamic Programming: Problems & Solutions
+
+20. Complexity Classes
+20.1
+
+Introduction
+
+20.2
+20.3
+
+Polynomial/Exponential Time
+What is a Decision Problem?
+
+20.4
+
+Decision Procedure
+
+20.5
+20.6
+
+What is a Complexity Class?
+Types of Complexity Classes
+
+20.7
+
+Reductions
+
+20.8
+
+Complexity Classes: Problems & Solutions
+
+21. Miscellaneous Concepts
+21.1
+21.2
+
+Introduction
+Hacks on Bitwise Programming
+
+21.3
+
+Other Programming Questions
+
+22. References
+
+The objective of this chapter is to explain the importance of the analysis of algorithms, their
+notations, relationships and solving as many problems as possible. Let us first focus on
+understanding the basic elements of algorithms, the importance of algorithm analysis, and then
+slowly move toward the other topics as mentioned above. After completing this chapter, you
+should be able to find the complexity of any given algorithm (especially recursive functions).
+
+1.1 Variables
+Before getting in to the definition of variables, let us relate them to an old mathematical equation.
+Many of us would have solved many mathematical equations since childhood. As an example,
+consider the equation below:
+
+We don’t have to worry about the use of this equation. The important thing that we need to
+understand is that the equation has names (x and y), which hold values (data). That means the
+names (x and y) are placeholders for representing data. Similarly, in computer science
+programming we need something for holding data, and variables is the way to do that.
+
+1.2 Data Types
+In the above-mentioned equation, the variables x and y can take any values such as integral
+numbers (10, 20), real numbers (0.23, 5.5), or just 0 and 1. To solve the equation, we need to
+relate them to the kind of values they can take, and data type is the name used in computer science
+programming for this purpose. A data type in a programming language is a set of data with
+predefined values. Examples of data types are: integer, floating point, unit number, character,
+string, etc.
+Computer memory is all filled with zeros and ones. If we have a problem and we want to code it,
+it’s very difficult to provide the solution in terms of zeros and ones. To help users, programming
+languages and compilers provide us with data types. For example, integer takes 2 bytes (actual
+value depends on compiler), float takes 4 bytes, etc. This says that in memory we are combining
+2 bytes (16 bits) and calling it an integer. Similarly, combining 4 bytes (32 bits) and calling it a
+float. A data type reduces the coding effort. At the top level, there are two types of data types:
+•
+•
+
+System-defined data types (also called Primitive data types)
+User-defined data types.
+
+System-defined data types (Primitive data types)
+Data types that are defined by system are called primitive data types. The primitive data types
+provided by many programming languages are: int, float, char, double, bool, etc. The number of
+bits allocated for each primitive data type depends on the programming languages, the compiler
+and the operating system. For the same primitive data type, different languages may use different
+sizes. Depending on the size of the data types, the total available values (domain) will also
+change. For example, “int” may take 2 bytes or 4 bytes. If it takes 2 bytes (16 bits), then the total
+possible values are minus 32,768 to plus 32,767 (-215 to 215-1). If it takes 4 bytes (32 bits), then
+the possible values are between –2,147,483,648 and +2,147,483,647 (-231 to 231-1). The same is
+the case with other data types.
+
+User-defined data types
+If the system-defined data types are not enough, then most programming languages allow the users
+to define their own data types, called user – defined data types. Good examples of user defined
+data types are: structures in C/C + + and classes in Java. For example, in the snippet below, we
+
+are combining many system-defined data types and calling the user defined data type by the name
+“newType”. This gives more flexibility and comfort in dealing with computer memory.
+
+1.3 Data Structure
+Based on the discussion above, once we have data in variables, we need some mechanism for
+manipulating that data to solve problems. Data structure is a particular way of storing and
+organizing data in a computer so that it can be used efficiently. A data structure is a special
+format for organizing and storing data. General data structure types include arrays, files, linked
+lists, stacks, queues, trees, graphs and so on.
+Depending on the organization of the elements, data structures are classified into two types:
+1)
+
+2)
+
+Linear data structures: Elements are accessed in a sequential order but it is not
+compulsory to store all elements sequentially (say, Linked Lists). Examples: Linked
+Lists, Stacks and Queues.
+Non – linear data structures: Elements of this data structure are stored/accessed in a
+non-linear order. Examples: Trees and graphs.
+
+1.4 Abstract Data Types (ADTs)
+Before defining abstract data types, let us consider the different view of system-defined data
+types. We all know that, by default, all primitive data types (int, float, etc.) support basic
+operations such as addition and subtraction. The system provides the implementations for the
+primitive data types. For user-defined data types we also need to define operations. The
+implementation for these operations can be done when we want to actually use them. That means,
+in general, user defined data types are defined along with their operations.
+To simplify the process of solving problems, we combine the data structures with their operations
+and we call this Abstract Data Types (ADTs). An ADT consists of two parts:
+1.
+2.
+
+Declaration of data
+Declaration of operations
+
+Commonly used ADTs include: Linked Lists, Stacks, Queues, Priority Queues, Binary Trees,
+Dictionaries, Disjoint Sets (Union and Find), Hash Tables, Graphs, and many others. For
+example, stack uses a LIFO (Last-In-First-Out) mechanism while storing the data in data
+structures. The last element inserted into the stack is the first element that gets deleted. Common
+operations are: creating the stack, push an element onto the stack, pop an element from the stack,
+finding the current top of the stack, finding the number of elements in the stack, etc.
+While defining the ADTs do not worry about the implementation details. They come into the
+picture only when we want to use them. Different kinds of ADTs are suited to different kinds of
+applications, and some are highly specialized to specific tasks. By the end of this book, we will
+go through many of them and you will be in a position to relate the data structures to the kind of
+problems they solve.
+
+1.5 What is an Algorithm?
+Let us consider the problem of preparing an omelette. To prepare an omelette, we follow the
+steps given below:
+1)
+2)
+
+3)
+
+Get the frying pan.
+Get the oil.
+a. Do we have oil?
+i. If yes, put it in the pan.
+ii. If no, do we want to buy oil?
+1. If yes, then go out and buy.
+2. If no, we can terminate.
+Turn on the stove, etc...
+
+What we are doing is, for a given problem (preparing an omelette), we are providing a step-bystep procedure for solving it. The formal definition of an algorithm can be stated as:
+
+In the traditional study of algorithms, there are two main criteria for judging the merits of
+algorithms: correctness (does the algorithm give solution to the problem in a finite number of
+steps?) and efficiency (how much resources (in terms of memory and time) does it take to execute
+the).
+Note: We do not have to prove each step of the algorithm.
+
+1.6 Why the Analysis of Algorithms?
+To go from city “A” to city “B”, there can be many ways of accomplishing this: by flight, by bus,
+
+by train and also by bicycle. Depending on the availability and convenience, we choose the one
+that suits us. Similarly, in computer science, multiple algorithms are available for solving the
+same problem (for example, a sorting problem has many algorithms, like insertion sort, selection
+sort, quick sort and many more). Algorithm analysis helps us to determine which algorithm is
+most efficient in terms of time and space consumed.
+
+1.7 Goal of the Analysis of Algorithms
+The goal of the analysis of algorithms is to compare algorithms (or solutions) mainly in terms of
+running time but also in terms of other factors (e.g., memory, developer effort, etc.)
+
+1.8 What is Running Time Analysis?
+It is the process of determining how processing time increases as the size of the problem (input
+size) increases. Input size is the number of elements in the input, and depending on the problem
+type, the input may be of different types. The following are the common types of inputs.
+•
+•
+•
+•
+•
+
+Size of an array
+Polynomial degree
+Number of elements in a matrix
+Number of bits in the binary representation of the input
+Vertices and edges in a graph.
+
+1.9 How to Compare Algorithms
+To compare algorithms, let us define a few objective measures:
+Execution times? Not a good measure as execution times are specific to a particular computer.
+Number of statements executed? Not a good measure, since the number of statements varies
+with the programming language as well as the style of the individual programmer.
+Ideal solution? Let us assume that we express the running time of a given algorithm as a function
+of the input size n (i.e., f(n)) and compare these different functions corresponding to running
+times. This kind of comparison is independent of machine time, programming style, etc.
+
+1.10 What is Rate of Growth?
+The rate at which the running time increases as a function of input is called rate of growth. Let us
+assume that you go to a shop to buy a car and a bicycle. If your friend sees you there and asks
+
+what you are buying, then in general you say buying a car. This is because the cost of the car is
+high compared to the cost of the bicycle (approximating the cost of the bicycle to the cost of the
+car).
+
+For the above-mentioned example, we can represent the cost of the car and the cost of the bicycle
+in terms of function, and for a given function ignore the low order terms that are relatively
+insignificant (for large value of input size, n). As an example, in the case below, n4, 2n2, 100n
+and 500 are the individual costs of some function and approximate to n4 since n4 is the highest
+rate of growth.
+
+1.11 Commonly used Rates of Growth
+Below is the list of growth rates you will come across in the following chapters.
+
+The diagram below shows the relationship between different rates of growth.
+
+1.12 Types of Analysis
+To analyze the given algorithm, we need to know with which inputs the algorithm takes less time
+(performing well) and with which inputs the algorithm takes a long time. We have already seen
+that an algorithm can be represented in the form of an expression. That means we represent the
+algorithm with multiple expressions: one for the case where it takes less time and another for the
+case where it takes more time.
+
+In general, the first case is called the best case and the second case is called the worst case for
+the algorithm. To analyze an algorithm we need some kind of syntax, and that forms the base for
+asymptotic analysis/notation. There are three types of analysis:
+•
+
+•
+
+•
+
+Worst case
+○
+Defines the input for which the algorithm takes a long time (slowest
+time to complete).
+○
+Input is the one for which the algorithm runs the slowest.
+Best case
+○
+Defines the input for which the algorithm takes the least time (fastest
+time to complete).
+○
+Input is the one for which the algorithm runs the fastest.
+Average case
+○
+Provides a prediction about the running time of the algorithm.
+○
+Run the algorithm many times, using many different inputs that come
+from some distribution that generates these inputs, compute the total
+running time (by adding the individual times), and divide by the
+number of trials.
+○
+Assumes that the input is random.
+
+For a given algorithm, we can represent the best, worst and average cases in the form of
+expressions. As an example, let f(n) be the function, which represents the given algorithm.
+
+Similarly for the average case. The expression defines the inputs with which the algorithm takes
+the average running time (or memory).
+
+1.13 Asymptotic Notation
+Having the expressions for the best, average and worst cases, for all three cases we need to
+identify the upper and lower bounds. To represent these upper and lower bounds, we need some
+kind of syntax, and that is the subject of the following discussion. Let us assume that the given
+algorithm is represented in the form of function f(n).
+
+1.14 Big-O Notation
+This notation gives the tight upper bound of the given function. Generally, it is represented as f(n)
+= O(g(n)). That means, at larger values of n, the upper bound of f(n) is g(n).
+
+For example, if f(n) = n4 + 100n2 + 10n + 50 is the given algorithm, then n4 is g(n). That means
+g(n) gives the maximum rate of growth for f(n) at larger values of n.
+Let us see the O–notation with a little more detail. O–notation defined as O(g(n)) = {f(n): there
+exist positive constants c and n0 such that 0 ≤ f(n) ≤ cg(n) for all n ≥ n0}. g(n) is an asymptotic
+tight upper bound for f(n). Our objective is to give the smallest rate of growth g(n) which is
+greater than or equal to the given algorithms’ rate of growth f(n).
+Generally we discard lower values of n. That means the rate of growth at lower values of n is not
+important. In the figure, n0 is the point from which we need to consider the rate of growth for a
+given algorithm. Below n0, the rate of growth could be different. n0 is called threshold for the
+given function.
+
+Big-O Visualization
+O(g(n)) is the set of functions with smaller or the same order of growth as g(n). For example;
+O(n2) includes O(1), O(n), O(nlogn), etc.
+Note: Analyze the algorithms at larger values of n only. What this means is, below n0 we do not
+care about the rate of growth.
+
+Big-O Examples
+Example-1 Find upper bound for f(n) = 3n + 8
+Solution: 3n + 8 ≤ 4n, for all n ≥ 8
+∴ 3n + 8 = O(n) with c = 4 and n0 = 8
+Example-2 Find upper bound for f(n) = n2 + 1
+Solution: n2 + 1 ≤ 2n2, for all n ≥ 1
+∴ n2 + 1 = O(n2) with c = 2 and n0 = 1
+Example-3 Find upper bound for f(n) = n4 + 100n2 + 50
+Solution: n4 + 100n2 + 50 ≤ 2n4, for all n ≥ 11
+∴ n4 + 100n2 + 50 = O(n4 ) with c = 2 and n0 = 11
+Example-4 Find upper bound for f(n) = 2n3 – 2n2
+Solution: 2n3 – 2n2 ≤ 2n3, for all n ≥ 1
+∴ 2n3 – 2n2 = O(n3 ) with c = 2 and n0 = 1
+Example-5 Find upper bound for f(n) = n
+Solution: n ≤ n, for all n ≥ 1
+∴ n = O(n) with c = 1 and n0 = 1
+Example-6 Find upper bound for f(n) = 410
+Solution: 410 ≤ 410, for all n ≥ 1
+∴ 410 = O(1) with c = 1 and n0 = 1
+
+No Uniqueness?
+There is no unique set of values for n0 and c in proving the asymptotic bounds. Let us consider,
+100n + 5 = O(n). For this function there are multiple n0 and c values possible.
+Solution1: 100n + 5 ≤ 100n + n = 101n ≤ 101n, for all n ≥ 5, n0 = 5 and c = 101 is a solution.
+Solution2: 100n + 5 ≤ 100n + 5n = 105n ≤ 105n, for all n ≥ 1, n0 = 1 and c = 105 is also a
+solution.
+
+1.15 Omega-Ω Notation
+Similar to the O discussion, this notation gives the tighter lower bound of the given algorithm and
+we represent it as f(n) = Ω(g(n)). That means, at larger values of n, the tighter lower bound of
+f(n) is g(n). For example, if f(n) = 100n2 + 10n + 50, g(n) is Ω(n2).
+The Ω notation can be defined as Ω(g(n)) = {f(n): there exist positive constants c and n0 such that
+0 ≤ cg(n) ≤ f(n) for all n ≥ n0}. g(n) is an asymptotic tight lower bound for f(n). Our objective is
+to give the largest rate of growth g(n) which is less than or equal to the given algorithm’s rate of
+growth f(n).
+
+Ω Examples
+Example-1 Find lower bound for f(n) = 5n2.
+
+Solution: ∃c, n0 Such that: 0 ≤ cn2≤ 5n2 ⇒ cn2≤ 5n2 ⇒ c = 5 and n0 = 1
+∴ 5n2 = Ω(n2) with c = 5 and n0 = 1
+Example-2 Prove f(n) = 100n + 5 ≠ Ω(n2).
+Solution: ∃ c, n0 Such that: 0 ≤ cn2 ≤ 100n + 5
+100n + 5 ≤ 100n + 5n (∀n ≥ 1) = 105n
+cn2 ≤ 105n ⇒ n(cn – 105) ≤ 0
+Since n is positive ⇒ cn – 105 ≤ 0 ⇒ n ≤ 105/c
+⇒ Contradiction: n cannot be smaller than a constant
+Example-3 2n = Ω(n), n3 = Ω(n3), logn = Ω(logn).
+
+1.16 Theta-Θ Notation
+This notation decides whether the upper and lower bounds of a given function (algorithm) are the
+same. The average running time of an algorithm is always between the lower bound and the upper
+bound. If the upper bound (O) and lower bound (Ω) give the same result, then the Θ notation will
+also have the same rate of growth. As an example, let us assume that f(n) = 10n + n is the
+expression. Then, its tight upper bound g(n) is O(n). The rate of growth in the best case is g(n) =
+O(n).
+In this case, the rates of growth in the best case and worst case are the same. As a result, the
+average case will also be the same. For a given function (algorithm), if the rates of growth
+(bounds) for O and Ω are not the same, then the rate of growth for the Θ case may not be the same.
+In this case, we need to consider all possible time complexities and take the average of those (for
+example, for a quick sort average case, refer to the Sorting chapter).
+Now consider the definition of Θ notation. It is defined as Θ(g(n)) = {f(n): there exist positive
+constants c1, c2 and n0 such that 0 ≤ c1g(n) ≤ f(n) ≤ c2g(n) for all n ≥ n0}. g(n) is an asymptotic
+tight bound for f(n). Θ(g(n)) is the set of functions with the same order of growth as g(n).
+In this case, the rates of growth in the best case and worst case are the same. As a result, the
+average case will also be the same. For a given function (algorithm), if the rates of growth
+(bounds) for O and Ω are not the same, then the rate of growth for the Θ case may not be the same.
+In this case, we need to consider all possible time complexities and take the average of those (for
+example, for a quick sort average case, refer to the Sorting chapter).
+
+Now consider the definition of Θ notation. It is defined as Θ(g(n)) = {f(n): there exist positive
+constants c1, c2 and n0 such that 0 ≤ c1g(n) ≤ f(n) ≤ c2g(n) for all n ≥ n0}. g(n) is an asymptotic
+tight bound for f(n). Θ(g(n)) is the set of functions with the same order of growth as g(n).
+
+Θ Examples
+Example 1 Find Θ bound for
+, for all, n ≥ 2
+
+Solution:
+∴
+
+with c1 = 1/5, c2 = 1 and n0 = 2
+
+Example 2 Prove n ≠ Θ(n2)
+Solution: c1 n2 ≤ n ≤ c2n2 ⇒ only holds for: n ≤ 1/c1
+∴ n ≠ Θ(n2)
+Example 3 Prove 6n3 ≠ Θ(n2)
+Solution: c1 n2≤ 6n3 ≤ c2 n2 ⇒ only holds for: n ≤ c2/6
+∴ 6n3 ≠ Θ(n2)
+Example 4 Prove n ≠ Θ (logn)
+
+Solution:
+
+Impossible
+
+1.17 Important Notes
+For analysis (best case, worst case and average), we try to give the upper bound (O) and lower
+bound (Ω) and average running time (Θ). From the above examples, it should also be clear that,
+for a given function (algorithm), getting the upper bound (O) and lower bound (Ω) and average
+running time (Θ) may not always be possible. For example, if we are discussing the best case of
+an algorithm, we try to give the upper bound (O) and lower bound (Ω) and average running time
+(Θ).
+In the remaining chapters, we generally focus on the upper bound (O) because knowing the lower
+bound (Ω) of an algorithm is of no practical importance, and we use the Θ notation if the upper
+bound (O) and lower bound (Ω) are the same.
+
+1.18 Why is it called Asymptotic Analysis?
+From the discussion above (for all three notations: worst case, best case, and average case), we
+can easily understand that, in every case for a given function f(n) we are trying to find another
+function g(n) which approximates f(n) at higher values of n. That means g(n) is also a curve
+which approximates f(n) at higher values of n.
+In mathematics we call such a curve an asymptotic curve. In other terms, g(n) is the asymptotic
+curve for f(n). For this reason, we call algorithm analysis asymptotic analysis.
+
+1.19 Guidelines for Asymptotic Analysis
+There are some general rules to help us determine the running time of an algorithm.
+1)
+
+Loops: The running time of a loop is, at most, the running time of the statements inside the
+loop (including tests) multiplied by the number of iterations.
+
+Total time = a constant c × n = c n = O(n).
+2)
+
+Nested loops: Analyze from the inside out. Total running time is the product of the sizes of
+
+all the loops.
+
+Total time =c × n × n = cn2 = O(n2).
+3)
+
+Consecutive statements: Add the time complexities of each statement.
+
+Total time = c0 + c1n + c2n2 = O(n2).
+4)
+
+If-then-else statements: Worst-case running time: the test, plus either the then part or the
+else part (whichever is the larger).
+
+Total time = c0 + c1 + (c2 + c3) * n = O(n).
+5)
+
+Logarithmic complexity: An algorithm is O(logn) if it takes a constant time to cut the
+problem size by a fraction (usually by½). As an example let us consider the following
+program:
+
+If we observe carefully, the value of i is doubling every time. Initially i = 1, in next step i
+= 2, and in subsequent steps i = 4, 8 and so on. Let us assume that the loop is executing
+some k times. At kth step 2k = n, and at (k + 1)th step we come out of the loop. Taking
+logarithm on both sides, gives
+
+Total time = O(logn).
+Note: Similarly, for the case below, the worst case rate of growth is O(logn). The same
+discussion holds good for the decreasing sequence as well.
+
+Another example: binary search (finding a word in a dictionary of n pages)
+•
+•
+•
+
+Look at the center point in the dictionary
+Is the word towards the left or right of center?
+Repeat the process with the left or right part of the dictionary until the word is found.
+
+1.20 Simplyfying properties of asymptotic notations
+•
+•
+•
+•
+•
+•
+
+Transitivity: f(n) = Θ(g(n)) and g(n) = Θ(h(n)) ⇒f(n) = Θ(h(n)). Valid for O and Ω
+as well.
+Reflexivity: f(n) = Θ(f(n)). Valid for O and Ω.
+Symmetry: f(n) = Θ(g(n)) if and only if g(n) = Θ(f(n)).
+Transpose symmetry: f(n) = O(g(n)) if and only if g(n) = Ω(f(n)).
+If f(n) is in O(kg(n)) for any constant k > 0, then f(n) is in O(g(n)).
+If f1(n) is in O((g1(n)) and f2(n) is in O(g2(n)), then (f1 + f2)(n) is in O(max(g1(n),
+g1(n))).
+
+•
+
+If f1(n) is in O(g1(n)) and f2(n) is in O(g2(n)) then f1(n) f2(n) is in O(g1(n) g1(n)).
+
+1.21 Commonly used Logarithms and Summations
+Logarithms
+
+Arithmetic series
+
+Geometric series
+
+Harmonic series
+
+Other important formulae
+
+1.22 Master Theorem for Divide and Conquer Recurrences
+All divide and conquer algorithms (Also discussed in detail in the Divide and Conquer chapter)
+divide the problem into sub-problems, each of which is part of the original problem, and then
+perform some additional work to compute the final answer. As an example, a merge sort
+algorithm [for details, refer to Sorting chapter] operates on two sub-problems, each of which is
+half the size of the original, and then performs O(n) additional work for merging. This gives the
+running time equation:
+
+The following theorem can be used to determine the running time of divide and conquer
+algorithms. For a given program (algorithm), first we try to find the recurrence relation for the
+problem. If the recurrence is of the below form then we can directly give the answer without fully
+solving it. If the recurrence is of the form
+, where a ≥ 1, b > l,k
+≥ 0 and p is a real number, then:
+1)
+2)
+
+3)
+
+If a > bk , then
+If a = bk
+a. If p > –1, then
+b. If p = –1, then
+c. If p < –1, then
+If a < bk
+a. If p ≥ 0, then
+b. If p < 0, then T(n) = O(nk )
+
+1.23 Divide and Conquer Master Theorem: Problems & Solutions
+For each of the following recurrences, give an expression for the runtime T(n) if the recurrence
+can be solved with the Master Theorem. Otherwise, indicate that the Master Theorem does not
+apply.
+Problem-1
+
+T(n) = 3T (n/2) + n2
+
+Solution: T(n) = 3T (n/2) + n2 ⇒ T (n) =Θ(n2) (Master Theorem Case 3.a)
+Problem-2
+
+T(n) = 4T (n/2) + n2
+
+Solution: T(n) = 4T (n/2) + n2 ⇒ T (n) = Θ(n2logn) (Master Theorem Case 2.a)
+Problem-3
+
+T(n) = T(n/2) + n2
+
+Solution: T(n) = T(n/2) + n2 ⇒ Θ(n2) (Master Theorem Case 3.a)
+
+Problem-4
+
+T(n) = 2nT(n/2) + nn
+
+Solution: T(n) = 2nT(n/2) + nn ⇒ Does not apply (a is not constant)
+Problem-5
+
+T(n) = 16T(n/4) + n
+
+Solution: T(n) = 16T (n/4) + n ⇒ T(n) = Θ(n2) (Master Theorem Case 1)
+Problem-6
+
+T(n) = 2T(n/2) + nlogn
+
+Solution: T(n) = 2T(n/2) + nlogn ⇒ T(n) = Θ(nlog2n) (Master Theorem Case 2.a)
+Problem-7
+
+T(n) = 2T(n/2) + n/logn
+
+Solution: T(n) = 2T(n/2) + n/logn ⇒ T(n) =Θ(nloglogn) (Master Theorem Case 2. b)
+Problem-8
+
+T(n) = 2T (n/4) + n0.51
+
+Solution: T(n) = 2T(n/4) + n0.51 ⇒ T (n) = Θ(n0.51) (Master Theorem Case 3.b)
+Problem-9
+
+T(n) = 0.5T(n/2) + 1/n
+
+Solution: T(n) = 0.5T(n/2) + 1/n ⇒ Does not apply (a < 1)
+Problem-10
+
+T (n) = 6T (n/3)+ n2 logn
+
+Solution: T(n) = 6T(n/3) + n2logn ⇒ T(n) =Θ(n2logn) (Master Theorem Case 3.a)
+Problem-11
+
+T(n) = 64T(n/8) – n2logn
+
+Solution: T(n) = 64T(n/8) – n2logn ⇒ Does not apply (function is not positive)
+Problem-12
+
+T (n) = 7T(n/3) + n2
+
+Solution: T(n) = 7T(n/3) + n2 ⇒ T(n) = Θ(n2) (Master Theorem Case 3.as)
+Problem-13
+
+T (n) = 4T (n/2) + logn
+
+Solution: T(n) = 4T (n/2) + logn ⇒ T(n) = Θ(n2) (Master Theorem Case 1)
+Problem-14
+
+T (n) = 16T (n/4) + n!
+
+Solution: T(n) = 16T (n/4) + n! ⇒ T(n) = Θ(n!) (Master Theorem Case 3.a)
+Problem-15
+Solution: T(n) =
+Problem-16
+
+T (n) =
+
+T (n/2) + logn
+
+T (n/2) + logn ⇒ T(n) = Θ(
+
+) (Master Theorem Case 1)
+
+T (n) = 3T (n/2) + n
+
+Solution: T(n) = 3T (n/2) + n ⇒ T(n) = Θ(nlog3) (Master Theorem Case 1)
+Problem-17
+
+T(n) = 3T (n/3) +
+
+Solution: T(n) = 3T (n/3) +
+Problem-18
+
+⇒ T(n) = Θ(n) (Master Theorem Case 1)
+
+T(n) = 4T (n/2) + cn
+
+Solution: T(n) = 4T (n/2) + cn ⇒ T(n) = Θ(n2) (Master Theorem Case 1)
+Problem-19
+
+T(n) = 3T (n/4) + nlogn
+
+Solution: T(n) = 3T (n/4) + nlogn ⇒ T(n) = Θ(nlogn) (Master Theorem Case 3.a)
+Problem-20
+
+T (n) = 3T (n/3) + n/2
+
+Solution: T(n) = 3T (n/3) + n/2 ⇒ T (n) = Θ(nlogn) (Master Theorem Case 2.a)
+
+1.24 Master Theorem for Subtract and Conquer Recurrences
+Let T(n) be a function defined on positive n, and having the property
+
+for some constants c, a > 0, b > 0, k ≥ 0, and function f(n). If f(n) is in O(nk ), then
+
+1.25 Variant of Subtraction and Conquer Master Theorem
+The solution to the equation T(n) = T(α n) + T((1 – α)n) + βn, where 0 < α < 1 and β > 0 are
+constants, is O(nlogn).
+
+1.26 Method of Guessing and Confirming
+Now, let us discuss a method which can be used to solve any recurrence. The basic idea behind
+this method is:
+
+In other words, it addresses the question: What if the given recurrence doesn’t seem to match with
+any of these (master theorem) methods? If we guess a solution and then try to verify our guess
+
+inductively, usually either the proof will succeed (in which case we are done), or the proof will
+fail (in which case the failure will help us refine our guess).
+As an example, consider the recurrence T(n) =
+T( ) + n. This doesn’t fit into the form
+required by the Master Theorems. Carefully observing the recurrence gives us the impression that
+it is similar to the divide and conquer method (dividing the problem into
+subproblems each
+with size
+). As we can see, the size of the subproblems at the first level of recursion is n. So,
+let us guess that T(n) = O(nlogn), and then try to prove that our guess is correct.
+Let’s start by trying to prove an upper bound T(n) ≤ cnlogn:
+
+The last inequality assumes only that
+. This is correct if n is sufficiently large and
+for any constant c, no matter how small. From the above proof, we can see that our guess is
+correct for the upper bound. Now, let us prove the lower bound for this recurrence.
+
+The last inequality assumes only that
+. This is incorrect if n is sufficiently large
+and for any constant k. From the above proof, we can see that our guess is incorrect for the lower
+bound.
+From the above discussion, we understood that Θ(nlogn) is too big. How about Θ(n)? The lower
+bound is easy to prove directly:
+
+Now, let us prove the upper bound for this Θ(n).
+
+From the above induction, we understood that Θ(n) is too small and Θ(nlogn) is too big. So, we
+need something bigger than n and smaller than nlogn. How about
+Proving the upper bound for
+
+:
+
+Proving the lower bound for
+
+:
+
+The last step doesn’t work. So,
+doesn’t work. What else is between n and nlogn?
+How about nloglogn? Proving upper bound for nloglogn:
+
+Proving lower bound for nloglogn:
+
+From the above proofs, we can see that T(n) ≤ cnloglogn, if c ≥ 1 and T(n) ≥ knloglogn, if k ≤ 1.
+Technically, we’re still missing the base cases in both proofs, but we can be fairly confident at
+this point that T(n) = Θ(nloglogn).
+
+1.27 Amortized Analysis
+Amortized analysis refers to determining the time-averaged running time for a sequence of
+operations. It is different from average case analysis, because amortized analysis does not make
+any assumption about the distribution of the data values, whereas average case analysis assumes
+the data are not “bad” (e.g., some sorting algorithms do well on average over all input orderings
+but very badly on certain input orderings). That is, amortized analysis is a worst-case analysis,
+but for a sequence of operations rather than for individual operations.
+The motivation for amortized analysis is to better understand the running time of certain
+techniques, where standard worst case analysis provides an overly pessimistic bound. Amortized
+analysis generally applies to a method that consists of a sequence of operations, where the vast
+majority of the operations are cheap, but some of the operations are expensive. If we can show
+that the expensive operations are particularly rare we can change them to the cheap operations,
+and only bound the cheap operations.
+The general approach is to assign an artificial cost to each operation in the sequence, such that the
+total of the artificial costs for the sequence of operations bounds the total of the real costs for the
+sequence. This artificial cost is called the amortized cost of an operation. To analyze the running
+time, the amortized cost thus is a correct way of understanding the overall running time – but note
+that particular operations can still take longer so it is not a way of bounding the running time of
+any individual operation in the sequence.
+When one event in a sequence affects the cost of later events:
+•
+•
+
+One particular task may be expensive.
+But it may leave data structure in a state that the next few operations becomes easier.
+
+Example: Let us consider an array of elements from which we want to find the kth smallest
+element. We can solve this problem using sorting. After sorting the given array, we just need to
+return the kth element from it. The cost of performing the sort (assuming comparison based sorting
+algorithm) is O(nlogn). If we perform n such selections then the average cost of each selection is
+O(nlogn/n) = O(logn). This clearly indicates that sorting once is reducing the complexity of
+subsequent operations.
+
+1.28 Algorithms Analysis: Problems & Solutions
+Note: From the following problems, try to understand the cases which have different
+
+complexities (O(n),O(logn),O(loglogn) etc.).
+Problem-21
+
+Find the complexity of the below recurrence:
+
+Solution: Let us try solving this function with substitution.
+
+This clearly shows that the complexity of this function is O(3n).
+Note: We can use the Subtraction and Conquer master theorem for this problem.
+Problem-22
+
+Find the complexity of the below recurrence:
+
+Solution: Let us try solving this function with substitution.
+
+∴ Complexity is O(1). Note that while the recurrence relation looks exponential, the solution to
+the recurrence relation here gives a different result.
+
+Problem-23
+
+What is the running time of the following function?
+
+Solution: Consider the comments in the below function:
+
+We can define the ‘s’ terms according to the relation si = si-1 + i. The value of ‘i’ increases by 1
+for each iteration. The value contained in ‘s’ at the ith iteration is the sum of the first ‘i’ positive
+integers. If k is the total number of iterations taken by the program, then the while loop terminates
+if:
+
+Problem-24
+
+Solution:
+
+Find the complexity of the function given below.
+
+In the above-mentioned function the loop will end, if i2 > n ⇒ T(n) = O(
+smae as that of Problem-23.
+Problem-25
+
+What is the complexity of the program given below?
+
+Solution: Consider the comments in the following function.
+
+The complexity of the above function is O(n2logn).
+Problem-26
+
+What is the complexity of the program given below?
+
+). The reasoning is
+
+Solution: Consider the comments in the following function.
+
+The complexity of the above function is O(nlog2n).
+Problem-27
+
+Find the complexity of the program given below.
+
+Solution: Consider the comments in the following function.
+
+The complexity of the above function is O(n). Even though the inner loop is bounded by n, but due
+to the break statement it is executing only once.
+Problem-28
+Write a recursive function for the running time T(n) of the function given below.
+Prove using the iterative method that T(n) = Θ(n3).
+
+Solution: Consider the comments in the function below:
+
+The recurrence for this code is clearly T(n) = T(n – 3) + cn2 for some constant c > 0 since each
+call prints out n2 asterisks and calls itself recursively on n – 3. Using the iterative method we get:
+T(n) = T(n – 3) + cn2. Using the Subtraction and Conquer master theorem, we get T(n) = Θ(n3).
+Problem-29
+
+Determine Θ bounds for the recurrence relation:
+
+Solution: Using Divide and Conquer master theorem, we get: O(nlog2n).
+Problem-30
+
+Determine Θ bounds for the recurrence:
+
+Solution: Substituting in the recurrence equation, we get:
+
+Problem-31
+
+Determine Θ bounds for the recurrence relation: T(n) = T(⌈ n/2 ⌉) + 7.
+
+Solution: Using Master Theorem we get: Θ(logn).
+Problem-32
+
+Prove that the running time of the code below is Ω(logn).
+
+Solution: The while loop will terminate once the value of ‘k’ is greater than or equal to the value
+of ‘n’. In each iteration the value of ‘k’ is multiplied by 3. If i is the number of iterations, then ‘k’
+has the value of 3i after i iterations. The loop is terminated upon reaching i iterations when 3i ≥ n
+↔ i ≥ log3 n, which shows that i = Ω (logn).
+Problem-33
+
+Solve the following recurrence.
+
+Solution: By iteration:
+
+Note: We can use the Subtraction and Conquer master theorem for this problem.
+Problem-34
+
+Consider the following program:
+
+Solution: The recurrence relation for the running time of this program is:
+
+Note T(n) has two recurrence calls indicating a binary tree. Each step recursively calls the
+program for n reduced by 1 and 2, so the depth of the recurrence tree is O(n). The number of
+leaves at depth n is 2n since this is a full binary tree, and each leaf takes at least O(1)
+computations for the constant factor. Running time is clearly exponential in n and it is O(2n).
+Problem-35
+
+Running time of following program?
+
+Solution: Consider the comments in the function below:
+
+In the above program, the inner loop executes n/i times for each value of i. Its running time is
+Problem-36
+
+What is the complexity of
+
+Solution: Using the logarithmic property, logxy = logx + logy, we can see that this problem is
+equivalent to
+
+This shows that the time complexity = O(nlogn).
+Problem-37
+What is the running time of the following recursive function (specified as a
+function of the input value n)? First write the recurrence formula and then find its
+complexity.
+
+Solution: Consider the comments in the function below:
+
+We can assume that for asymptotical analysis k = ⌈k⌉ for every integer k ≥ 1. The recurrence for
+this code is
+Using master theorem, we get T(n) = Θ(n).
+Problem-38
+What is the running time of the following recursive function (specified as a
+function of the input value n)? First write a recurrence formula, and show its solution using
+induction.
+
+Solution: Consider the comments in the below function:
+
+The if statement requires constant time [O(1)]. With the for loop, we neglect the loop overhead
+and only count three times that the function is called recursively. This implies a time complexity
+recurrence:
+
+Using the Subtraction and Conquer master theorem, we get T(n) = Θ(3n).
+Problem-39
+Write a recursion formula for the running time T(n) of the function f whose code
+is given below. What is the running time of function, as a function of n?
+
+Solution: Consider the comments in the below function:
+
+The
+
+recurrence
+
+for
+
+this
+
+piece
+
+of
+code
+is
+Applying master theorem,
+
+we get T(n) = O(n).
+Problem-40
+
+Find the complexity of the recurrence: T(n) = 2T(
+
+) + logn
+
+Solution: The given recurrence is not in the master theorem format. Let us try to convert this to the
+master theorem format by assuming n = 2m. Applying the logarithm on both sides gives, logn =
+mlog2 ⇒ m = logn. Now, the given function becomes:
+
+To
+
+make
+
+it
+
+simple
+
+we
+assume
+Applying the master theorem
+
+format would result in S(m) = O(mlogrn). If we substitute m = logn back, T(n) = S(logn) =
+O((logn) loglogn).
+Problem-41
+
+Find the complexity of the recurrence: T(n) = T(
+
+)+1
+
+Solution: Applying the logic of Problem-40 gives
+
+Applying the master
+
+theorem would result in S(m) = O(logm). Substituting m = logn, gives T(n) = S(logn) =
+O(loglogn).
+Problem-42
+
+Find the complexity of the recurrence: T(n) = 2T(
+
+Solution: Applying the logic of Problem-40 gives:
+theorem results
+Problem-43
+
+)+1
+Using the master
+
+Substituting m = logn gives T(n) =O(logn).
+Find the complexity of the function given below.
+
+Solution: Consider the comments in the below function:
+
+For the above function, recurrence function can be given as: T(n) = T(
+that of Problem-41.
+Problem-44
+of n.
+
+) + 1. This is same as
+
+Analyze the running time of the following recursive pseuedocode as a function
+
+Solution: Consider the comments in below pseuedocode and call running time of function(n) as
+T(n).
+
+T(n) can be defined as follows:
+
+Using the master theorem gives:
+Problem-45
+
+Find the complexity of the pseudocode given below:
+
+Solution: Consider the comments in the pseudocode given below:
+
+The recurrence for this function is T(n) = T(n/2) + n. Using master theorem we get: T(n) = O(n).
+
+Problem-46
+
+Running time of the following program?
+
+Solution: Consider the comments in the function given below:
+
+Complexity of above program is O(nlogn).
+Problem-47
+
+Running time of the following program?
+
+Solution: Consider the comments in the function given below:
+
+The time complexity of this program is: O(n2).
+Problem-48
+
+Find the complexity of the below function:
+
+Solution: Consider the comments in the function given below:
+
+The recurrence for this function is:
+O(n).
+Problem-49
+
+Solution:
+
+Find the complexity of the below function:
+
+Using master theorem, we get T(n) =
+
+Time Complexity: O(logn * logn) = O(log2n).
+Problem-50
+Σ1≤k≤nO(n), where O(n) stands for order n is:
+(a) O(n)
+(b) O(n2)
+(c) O(n3)
+(d) O(3n2)
+(e) O(1.5n2)
+Solution: (b). Σ1≤k≤nO(n) = O(n) Σ1≤k≤n1 = O(n2).
+Problem-51
+Which of the following three claims are correct
+I (n + k)m = Θ(nm), where k and m are constants II 2n+1 = O(2n)
+(a) I and II
+(b) I and III
+(c) II and III
+(d) I, II and III
+
+III 22n+1 = O(2n)
+
+Solution: (a). (I) (n + k)m = nk + c1*nk –1 + ... km = Θ(nk ) and (II) 2n+1 = 2*2n = O(2n)
+Problem-52
+
+Consider the following functions: f(n) = 2n g(n) = n! h(n) = nlogn
+
+Which of the following statements about the asymptotic behavior of f(n), g(n), and h(n) is
+true?
+(A) f(n) = O(g(n)); g(n) = O(h(n))
+(B) f(n) = Ω (g(n)); g(n) = O(h(n))
+(C) g(n) = O(f(n)); h(n) = O(f(n))
+(D) h(n) = O(f(n)); g(n) = Ω (f(n))
+Solution: (D). According to the rate of growth: h(n) < f(n) < g(n) (g(n) is asymptotically greater
+than f(n), and f(n) is asymptotically greater than h(n)). We can easily see the above order by
+taking logarithms of the given 3 functions: lognlogn < n < log(n!). Note that, log(n!) = O(nlogn).
+Problem-53
+
+Consider the following segment of C-code:
+
+The number of comparisons made in the execution of the loop for any n > 0 is:
+(A)
+(B) n
+(C)
+(D)
+Solution: (a). Let us assume that the loop executes k times. After kth step the value of j is 2k .
+Taking logarithms on both sides gives
+Since we are doing one more comparison for
+exiting from the loop, the answer is
+.
+Problem-54
+Consider the following C code segment. Let T(n) denote the number of times the
+for loop is executed by the program on input n. Which of the following is true?
+
+(A) T(n) = O( ) and T(n) = Ω( )
+(B) T(n) = O( ) and T(n) = Ω(1)
+(C) T(n) = O(n) and T(n) = Ω( )
+(D) None of the above
+Solution: (B). Big O notation describes the tight upper bound and Big Omega notation describes
+the tight lower bound for an algorithm. The for loop in the question is run maximum
+times and
+minimum 1 time. Therefore, T(n) = O( ) and T(n) = Ω(1).
+Problem-55
+In the following C function, let n ≥ m. How many recursive calls are made by
+this function?
+
+(A)
+(B) Ω(n)
+
+(C)
+(D)
+
+Θ(n)
+
+Solution: No option is correct. Big O notation describes the tight upper bound and Big Omega
+notation describes the tight lower bound for an algorithm. For m = 2 and for all n = 2i, the
+running time is O(1) which contradicts every option.
+Problem-56
+Suppose T(n) = 2T(n/2) + n, T(0)=T(1)=1. Which one of the following is
+FALSE?
+(A) T(n) = O(n2)
+(B) T(n) = Θ(nlogn)
+(C) T(n) = Ω(n2)
+(D) T(n) = O(nlogn)
+Solution: (C). Big O notation describes the tight upper bound and Big Omega notation describes
+the tight lower bound for an algorithm. Based on master theorem, we get T(n) = Θ(nlogn). This
+indicates that tight lower bound and tight upper bound are the same. That means, O(nlogn) and Ω
+(nlogn) are correct for given recurrence. So option (C) is wrong.
+Problem-57
+
+Find the complexity of the below function:
+
+Solution:
+
+Time Complexity: O(n5).
+Problem-58
+
+To calculate 9n, give an algorithm and discuss its complexity.
+
+Solution: Start with 1 and multiply by 9 until reaching 9n.
+Time Complexity: There are n – 1 multiplications and each takes constant time giving a Θ(n)
+algorithm.
+Problem-59
+
+For Problem-58, can we improve the time complexity?
+
+Solution: Refer to the Divide and Conquer chapter.
+Problem-60
+
+Find the complexity of the below function:
+
+Solution: Consider the worst-case.
+
+Time Complexity: O(n2).
+Problem-61
+
+Solve the following recurrence relation using the recursion tree method:
+
+Solution: How much work do we do in each level of the recursion tree?
+
+In level 0, we take n2 time. At level 1, the two subproblems take time:
+
+At level 2 the four subproblems are of size
+subproblems take time:
+
+Similarly the amount of work at level k is at most
+Let
+
+the total runtime is then:
+
+and
+
+respectively. These two
+
+That is, the first level provides a constant fraction of the total runtime.
+Problem-62
+
+Find the time complexity of recurrence
+
+Solution: Let us solve this problem by method of guessing. The total size on each level of the
+recurrance tree is less than n, so we guess that f(n) = n will dominate. Assume for all i < n that
+c1n ≤ T(i) ≤ c2n. Then,
+
+If c1 ≥ 8k and c2 ≤ 8k, then c1n = T(n) = c2n. So, T(n) = Θ(n). In general, if you have multiple
+recursive calls, the sum of the arguments to those calls is less than n (in this case
+), and f(n) is reasonably large, a good guess is T(n) = Θ(f(n)).
+Problem-63
+
+Solution:
+
+Rank
+
+the
+
+following
+
+functions
+
+by
+
+order
+
+of
+
+growth:
+
+Problem-64
+
+Can we say
+
+Solution: Yes: because
+Problem-65
+
+Can we say 23n = O(2n)?
+
+Solution: No: because 23n = (23)n = 8n not less than 2n.
+
+2.1 Introduction
+In this chapter, we will look at one of the important topics, “recursion”, which will be used in
+almost every chapter, and also its relative “backtracking”.
+
+2.2 What is Recursion?
+Any function which calls itself is called recursive. A recursive method solves a problem by
+calling a copy of itself to work on a smaller problem. This is called the recursion step. The
+recursion step can result in many more such recursive calls. It is important to ensure that the
+recursion terminates. Each time the function calls itself with a slightly simpler version of the
+original problem. The sequence of smaller problems must eventually converge on the base case.
+
+2.3 Why Recursion?
+Recursion is a useful technique borrowed from mathematics. Recursive code is generally shorter
+and easier to write than iterative code. Generally, loops are turned into recursive functions when
+they are compiled or interpreted. Recursion is most useful for tasks that can be defined in terms of
+similar subtasks. For example, sort, search, and traversal problems often have simple recursive
+solutions.
+
+2.4 Format of a Recursive Function
+A recursive function performs a task in part by calling itself to perform the subtasks. At some
+point, the function encounters a subtask that it can perform without calling itself. This case, where
+the function does not recur, is called the base case. The former, where the function calls itself to
+perform a subtask, is referred to as the cursive case. We can write all recursive functions using
+the format:
+
+As an example consider the factorial function: n! is the product of all integers between n and 1.
+The definition of recursive factorial looks like:
+
+This definition can easily be converted to recursive implementation. Here the problem is
+determining the value of n!, and the subproblem is determining the value of (n – l)!. In the
+recursive case, when n is greater than 1, the function calls itself to determine the value of (n –l)!
+and multiplies that with n. In the base case, when n is 0 or 1, the function simply returns 1. This
+looks like the following:
+
+2.5 Recursion and Memory (Visualization)
+Each recursive call makes a new copy of that method (actually only the variables) in memory.
+Once a method ends (that is, returns some data), the copy of that returning method is removed
+from memory. The recursive solutions look simple but visualization and tracing takes time. For
+better understanding, let us consider the following example.
+
+For this example, if we call the print function with n=4, visually our memory assignments may
+look like:
+
+Now, let us consider our factorial function. The visualization of factorial function with n=4 will
+look like:
+
+2.6 Recursion versus Iteration
+While discussing recursion, the basic question that comes to mind is: which way is better? –
+iteration or recursion? The answer to this question depends on what we are trying to do. A
+recursive approach mirrors the problem that we are trying to solve. A recursive approach makes
+it simpler to solve a problem that may not have the most obvious of answers. But, recursion adds
+overhead for each recursive call (needs space on the stack frame).
+
+Recursion
+
+•
+•
+•
+•
+
+Terminates when a base case is reached.
+Each recursive call requires extra space on the stack frame (memory).
+If we get infinite recursion, the program may run out of memory and result in stack
+overflow.
+Solutions to some problems are easier to formulate recursively.
+
+Iteration
+•
+•
+•
+•
+
+Terminates when a condition is proven to be false.
+Each iteration does not require any extra space.
+An infinite loop could loop forever since there is no extra memory being created.
+Iterative solutions to a problem may not always be as obvious as a recursive
+solution.
+
+2.7 Notes on Recursion
+•
+•
+•
+•
+
+•
+•
+
+Recursive algorithms have two types of cases, recursive cases and base cases.
+Every recursive function case must terminate at a base case.
+Generally, iterative solutions are more efficient than recursive solutions [due to the
+overhead of function calls].
+A recursive algorithm can be implemented without recursive function calls using a
+stack, but it’s usually more trouble than its worth. That means any problem that can
+be solved recursively can also be solved iteratively.
+For some problems, there are no obvious iterative algorithms.
+Some problems are best suited for recursive solutions while others are not.
+
+2.8 Example Algorithms of Recursion
+•
+•
+•
+•
+•
+•
+•
+•
+•
+
+Fibonacci Series, Factorial Finding
+Merge Sort, Quick Sort
+Binary Search
+Tree Traversals and many Tree Problems: InOrder, PreOrder PostOrder
+Graph Traversals: DFS [Depth First Search] and BFS [Breadth First Search]
+Dynamic Programming Examples
+Divide and Conquer Algorithms
+Towers of Hanoi
+Backtracking Algorithms [we will discuss in next section]
+
+2.9 Recursion: Problems & Solutions
+
+In this chapter we cover a few problems with recursion and we will discuss the rest in other
+chapters. By the time you complete reading the entire book, you will encounter many recursion
+problems.
+Problem-1
+
+Discuss Towers of Hanoi puzzle.
+
+Solution: The Towers of Hanoi is a mathematical puzzle. It consists of three rods (or pegs or
+towers) and a number of disks of different sizes which can slide onto any rod. The puzzle starts
+with the disks on one rod in ascending order of size, the smallest at the top, thus making a conical
+shape. The objective of the puzzle is to move the entire stack to another rod, satisfying the
+following rules:
+•
+•
+•
+Algorithm
+•
+•
+•
+•
+
+Problem-2
+Solution:
+
+Only one disk may be moved at a time.
+Each move consists of taking the upper disk from one of the rods and sliding it onto
+another rod, on top of the other disks that may already be present on that rod.
+No disk may be placed on top of a smaller disk.
+
+Move the top n – 1 disks from Source to Auxiliary tower,
+Move the nth disk from Source to Destination tower,
+Move the n – 1 disks from Auxiliary tower to Destination tower.
+Transferring the top n – 1 disks from Source to Auxiliary tower can again be thought
+of as a fresh problem and can be solved in the same manner. Once we solve Towers
+of Hanoi with three disks, we can solve it with any number of disks with the above
+algorithm.
+
+Given an array, check whether the array is in sorted order with recursion.
+
+Time Complexity: O(n). Space Complexity: O(n) for recursive stack space.
+
+2.10 What is Backtracking?
+Backtracking is an improvement of the brute force approach. It systematically searches for a
+solution to a problem among all available options. In backtracking, we start with one possible
+option out of many available options and try to solve the problem if we are able to solve the
+problem with the selected move then we will print the solution else we will backtrack and select
+some other option and try to solve it. If none if the options work out we will claim that there is no
+solution for the problem.
+Backtracking is a form of recursion. The usual scenario is that you are faced with a number of
+options, and you must choose one of these. After you make your choice you will get a new set of
+options; just what set of options you get depends on what choice you made. This procedure is
+repeated over and over until you reach a final state. If you made a good sequence of choices, your
+final state is a goal state; if you didn’t, it isn’t. Backtracking can be thought of as a selective
+tree/graph traversal method. The tree is a way of representing some initial starting position (the
+root node) and a final goal state (one of the leaves). Backtracking allows us to deal with
+situations in which a raw brute-force approach would explode into an impossible number of
+options to consider. Backtracking is a sort of refined brute force. At each node, we eliminate
+choices that are obviously not possible and proceed to recursively check only those that have
+potential.
+What’s interesting about backtracking is that we back up only as far as needed to reach a previous
+decision point with an as-yet-unexplored alternative. In general, that will be at the most recent
+decision point. Eventually, more and more of these decision points will have been fully explored,
+and we will have to backtrack further and further. If we backtrack all the way to our initial state
+and have explored all alternatives from there, we can conclude the particular problem is
+unsolvable. In such a case, we will have done all the work of the exhaustive recursion and known
+that there is no viable solution possible.
+•
+•
+•
+
+•
+
+Sometimes the best algorithm for a problem is to try all possibilities.
+This is always slow, but there are standard tools that can be used to help.
+Tools: algorithms for generating basic objects, such as binary strings [2n
+possibilities for n-bit string], permutations [n!], combinations [n!/r! (n – r)!],
+general strings [k –ary strings of length n has kn possibilities], etc...
+Backtracking speeds the exhaustive search by pruning.
+
+2.11 Example Algorithms of Backtracking
+•
+•
+•
+•
+•
+•
+•
+
+Binary Strings: generating all binary strings
+Generating k – ary Strings
+The Knapsack Problem
+N-Queens Problem
+Generalized Strings
+Hamiltonian Cycles [refer to Graphs chapter]
+Graph Coloring Problem
+
+2.12 Backtracking: Problems & Solutions
+Problem-3
+
+Generate all the strings of n bits. Assume A[0..n – 1] is an array of size n.
+
+Solution:
+
+Let T(n) be the running time of binary(n). Assume function System.out.println takes time O(1).
+
+Using Subtraction and Conquer Master theorem we get: T(n) = O(2n). This means the algorithm
+for generating bit-strings is optimal.
+Problem-4
+
+Generate all the strings of length n drawn from 0... k – 1.
+
+Solution: Let us assume we keep current k-ary string in an array A[0.. n – 1]. Call function kstring(n, k):
+
+Let T(n) be the running time of k – string(n). Then,
+
+Using Subtraction and Conquer Master theorem we get: T(n) = O(kn).
+Note: For more problems, refer to String Algorithms chapter.
+Problem-5
+
+Solve the recurrence T(n) = 2T(n – 1) + 2n.
+
+Solution: At each level of the recurrence tree, the number of problems is double from the
+previous level, while the amount of work being done in each problem is half from the previous
+level. Formally, the ith level has 2i problems, each requiring 2n-i work. Thus the ith level requires
+exactly 2n work. The depth of this tree is n, because at the ith level, the originating call will be
+T(n – i). Thus the total complexity for T(n) is T(n2n).
+
+3.1 What is a Linked List?
+A linked list is a data structure used for storing collections of data. A linked list has the following
+properties.
+•
+•
+•
+•
+•
+
+Successive elements are connected by pointers
+The last element points to NULL
+Can grow or shrink in size during execution of a program
+Can be made just as long as required (until systems memory exhausts)
+Does not waste memory space (but takes some extra memory for pointers). It
+allocates memory as list grows.
+
+3.2 Linked Lists ADT
+The following operations make linked lists an ADT:
+Main Linked Lists Operations
+•
+•
+
+Insert: inserts an element into the list
+Delete: removes and returns the specified position element from the list
+
+Auxiliary Linked Lists Operations
+•
+•
+•
+
+Delete List: removes all elements of the list (disposees the list)
+Count: returns the number of elements in the list
+Find nth node from the end of the list
+
+3.3 Why Linked Lists?
+There are many other data structures that do the same thing as linked lists. Before discussing
+linked lists it is important to understand the difference between linked lists and arrays. Both
+linked lists and arrays are used to store collections of data, and since both are used for the same
+purpose, we need to differentiate their usage. That means in which cases arrays are suitable and
+in which cases linked lists are suitable.
+
+3.4 Arrays Overview
+One memory block is allocated for the entire array to hold the elements of the array. The array
+elements can be accessed in constant time by using the index of the particular element as the
+subscript.
+
+Why Constant Time for Accessing Array Elements?
+To access an array element, the address of an element is computed as an offset from the base
+address of the array and one multiplication is needed to compute what is supposed to be added to
+the base address to get the memory address of the element. First the size of an element of that data
+type is calculated and then it is multiplied with the index of the element to get the value to be
+added to the base address.
+This process takes one multiplication and one addition. Since these two operations take constant
+time, we can say the array access can be performed in constant time.
+
+Advantages of Arrays
+•
+•
+
+Simple and easy to use
+Faster access to the elements (constant access)
+
+Disadvantages of Arrays
+•
+•
+•
+•
+
+Preallocates all needed memory up front and wastes memory space for indices in the
+array that are empty.
+Fixed size: The size of the array is static (specify the array size before using it).
+One block allocation: To allocate the array itself at the beginning, sometimes it may
+not be possible to get the memory for the complete array (if the array size is big).
+Complex position-based insertion: To insert an element at a given position, we may
+need to shift the existing elements. This will create a position for us to insert the
+new element at the desired position. If the position at which we want to add an
+element is at the beginning, then the shifting operation is more expensive.
+
+Dynamic Arrays
+Dynamic array (also called growable array, resizable array, dynamic table, or array list) is a
+random access, variable-size list data structure that allows elements to be added or removed.
+One simple way of implementing dynamic arrays is to initially start with some fixed size array.
+As soon as that array becomes full, create the new array double the size of the original array.
+Similarly, reduce the array size to half if the elements in the array are less than half the size.
+Note: We will see the implementation for dynamic arrays in the Stacks, Queues and Hashing
+chapters.
+
+Advantages of Linked Lists
+Linked lists have both advantages and disadvantages. The advantage of linked lists is that they can
+be expanded in constant time. To create an array, we must allocate memory for a certain number
+of elements. To add more elements to the array when full, we must create a new array and copy
+the old array into the new array. This can take a lot of time.
+We can prevent this by allocating lots of space initially but then we might allocate more than we
+need and waste memory. With a linked list, we can start with space for just one allocated element
+and add on new elements easily without the need to do any copying and reallocating.
+
+Issues with Linked Lists (Disadvantages)
+There are a number of issues with linked lists. The main disadvantage of linked lists is access
+time to individual elements. Array is random-access, which means it takes O(1) to access any
+element in the array. Linked lists take O(n) for access to an element in the list in the worst case.
+Another advantage of arrays in access time is spacial locality in memory. Arrays are defined as
+contiguous blocks of memory, and so any array element will be physically near its neighbors. This
+greatly benefits from modern CPU caching methods.
+Although the dynamic allocation of storage is a great advantage, the overhead with storing and
+retrieving data can make a big difference. Sometimes linked lists are hard to manipulate. If the
+last item is deleted, the last but one must then have its pointer changed to hold a NULL reference.
+This requires that the list is traversed to find the last but one link, and its pointer set to a NULL
+reference.
+Finally, linked lists waste memory in terms of extra reference points.
+
+3.5 Comparison of Linked Lists with Arrays & Dynamic Arrays
+
+3.6 Singly Linked Lists
+Generally “linked list” means a singly linked list. This list consists of a number of nodes in which
+each node has a next pointer to the following element. The link of the last node in the list is
+NULL, which indicates the end of the list.
+
+Following is a type declaration for a linked list:
+
+Basic Operations on a List
+•
+•
+•
+
+Traversing the list
+Inserting an item in the list
+Deleting an item from the list
+
+Traversing the Linked List
+Let us assume that the head points to the first node of the list. To traverse the list we do the
+following.
+•
+•
+•
+
+Follow the pointers.
+Display the contents of the nodes (or count) as they are traversed.
+Stop when the next pointer points to NULL.
+
+The ListLength() function takes a linked list as input and counts the number of nodes in the list.
+The function given below can be used for printing the list data with extra print function.
+
+Time Complexity: O(n), for scanning the list of size n. Space Complexity: O(1), for creating a
+temporary variable.
+
+Singly Linked List Insertion
+Insertion into a singly-linked list has three cases:
+•
+•
+•
+
+Inserting a new node before the head (at the beginning)
+Inserting a new node after the tail (at the end of the list)
+Inserting a new node at the middle of the list (random location)
+
+Note: To insert an element in the linked list at some position p, assume that after inserting the
+element the position of this new node is p.
+
+Inserting a Node in Singly Linked List at the Beginning
+In this case, a new node is inserted before the current head node. Only one next pointer needs to
+be modified (new node’s next pointer) and it can be done in two steps:
+•
+
+Update the next pointer of new node, to point to the current head.
+
+•
+
+Update head pointer to point to the new node.
+
+Inserting a Node in Singly Linked List at the Ending
+In this case, we need to modify two next pointers (last nodes next pointer and new nodes next
+pointer).
+•
+
+New nodes next pointer points to NULL.
+
+•
+
+Last nodes next pointer points to the new node.
+
+Inserting a Node in Singly Linked List at the Middle
+Let us assume that we are given a position where we want to insert the new node. In this case
+also, we need to modify two next pointers.
+•
+
+If we want to add an element at position 3 then we stop at position 2. That means we
+traverse 2 nodes and insert the new node. For simplicity let us assume that the
+second node is called position node. The new node points to the next node of the
+position where we want to add this node.
+
+•
+
+Position node’s next pointer now points to the new node.
+
+Note: We can implement the three variations of the insert operation separately.
+Time Complexity: O(n), since, in the worst case, we may need to insert the node at the end of the
+list.
+Space Complexity: O(1), for creating one temporary variable.
+
+Singly Linked List Deletion
+
+Similar to insertion, here we also have three cases.
+•
+•
+•
+
+Deleting the first node
+Deleting the last node
+Deleting an intermediate node.
+
+Deleting the First Node in Singly Linked List
+First node (current head node) is removed from the list. It can be done in two steps:
+•
+
+Create a temporary node which will point to the same node as that of head.
+
+•
+
+Now, move the head nodes pointer to the next node and dispose of the temporary
+node.
+
+Deleting the Last node in Singly Linked List
+In this case, the last node is removed from the list. This operation is a bit trickier than removing
+the first node, because the algorithm should find a node, which is previous to the tail. It can be
+done in three steps:
+•
+
+Traverse the list and while traversing maintain the previous node address also. By
+the time we reach the end of the list, we will have two pointers, one pointing to the
+tail node and the other pointing to the node before the tail node.
+
+•
+
+Update previous node’s next pointer with NULL.
+
+•
+
+Dispose of the tail node.
+
+Deleting an Intermediate Node in Singly Linked List
+In this case, the node to be removed is always located between two nodes. Head and tail links
+are not updated in this case. Such a removal can be done in two steps:
+•
+
+Similar to the previous case, maintain the previous node while traversing the list.
+Once we find the node to be deleted, change the previous node’s next pointer to the
+next pointer of the node to be deleted.
+
+•
+
+Dispose of the current node to be deleted.
+
+Time Complexity: O(n). In the worst case, we may need to delete the node at the end of the list.
+Space Complexity: O(1). Since, we are creating only one temporary variable.
+
+Deleting Singly Linked List
+This works by storing the current node in some temporary variable and freeing the current node.
+After freeing the current node, go to the next node with a temporary variable and repeat this
+process for all nodes.
+Time Complexity: O(n), for scanning the complete list of size n. Space Complexity: O(1), for
+temporary variable.
+
+Implementation
+
+3.7 Doubly Linked Lists
+The advantage of a doubly linked list (also called two – way linked list) is that given a node in
+the list, we can navigate in both directions. A node in a singly linked list cannot be removed
+unless we have the pointer to its predecessor. But in a doubly linked list, we can delete a node
+even if we don’t have the previous node’s address (since each node has a left pointer pointing to
+the previous node and can move backward).
+The primary disadvantages of doubly linked lists are:
+
+•
+•
+
+Each node requires an extra pointer, requiring more space.
+The insertion or deletion of a node takes a bit longer (more pointer operations).
+
+Similar to a singly linked list, let us implement the operations of a doubly linked list. If you
+understand the singly linked list operations, then doubly linked list operations are obvious.
+Following is a type declaration for a doubly linked list:
+
+Doubly Linked List Insertion
+Insertion into a doubly-linked list has three cases (same as a singly linked list).
+
+•
+•
+•
+
+Inserting a new node before the head.
+Inserting a new node after the tail (at the end of the list).
+Inserting a new node at the middle of the list.
+
+Inserting a Node in Doubly Linked List at the Beginning
+In this case, new node is inserted before the head node. Previous and next pointers need to be
+modified and it can be done in two steps:
+•
+
+Update the right pointer of the new node to point to the current head node (dotted link
+in below figure) and also make left pointer of new node as NULL.
+
+•
+
+Update head node’s left pointer to point to the new node and make new node as head.
+
+Inserting a Node in Doubly Linked List at the Ending
+In this case, traverse the list till the end and insert the new node.
+•
+
+New node’s right pointer points to NULL and left pointer points to the end of the list.
+
+•
+
+Update right pointer of last node to point to new node.
+
+Inserting a Node in Doubly Linked List in the Middle
+As discussed in singly linked lists, traverse the list to the position node and insert the new node.
+•
+
+New node right pointer points to the next node of the position node where we want
+to insert the new node. Also, new node left pointer points to the position node.
+
+•
+
+Position node right pointer points to the new node and the next node of position node
+left pointer points to new node.
+
+Time Complexity: O(n). In the worst case, we may need to insert the node at the end of the list.
+Space Complexity: O(1), for creating one temporary variable.
+
+Doubly Linked List Deletion
+Similar to singly linked list deletion, here we have three cases:
+•
+•
+•
+
+Deleting the first node
+Deleting the last node
+Deleting an intermediate node
+
+Deleting the First Node in Doubly Linked List
+In this case, the first node (current head node) is removed from the list. It can be done in two
+steps:
+•
+Create a temporary node which will point to the same node as that of head.
+
+•
+
+Now, move the head nodes pointer to the next node and change the heads left pointer
+to NULL and dispose of the temporary node.
+
+Deleting the Last Node in Doubly Linked List
+This operation is a bit trickier than removing the first node, because the algorithm should find a
+node, which is previous to the tail first. This can be done in three steps:
+•
+
+Traverse the list and while traversing maintain the previous node address also. By
+the time we reach the end of the list, we will have two pointers, one pointing to the
+tail and the other pointing to the node before the tail.
+
+•
+
+Update the next pointer of previous node to the tail node with NULL.
+
+•
+
+Dispose of the tail node.
+
+Deleting an Intermediate Node in Doubly Linked List
+In this case, the node to be removed is always located between two nodes, and the head and tail
+links are not updated. The removal can be done in two steps:
+•
+
+Similar to the previous case, maintain the previous node while also traversing the
+list. Upon locating the node to be deleted, change the previous node’s next pointer
+to the next node of the node to be deleted.
+
+•
+
+Dispose of the current node to be deleted.
+
+Time Complexity: O(n), for scanning the complete list of size n.
+Space Complexity: O(1), for creating one temporary variable.
+
+Implementation
+
+3.8 Circular Linked Lists
+In singly linked lists and doubly linked lists, the end of lists are indicated with NULL value. But
+circular linked lists do not have ends. While traversing the circular linked lists we should be
+careful; otherwise we will be traversing the list infinitely. In circular linked lists, each node has a
+successor. Note that unlike singly linked lists, there is no node with NULL pointer in a circularly
+linked list. In some situations, circular linked lists are useful.
+For example, when several processes are using the same computer resource (CPU) for the same
+amount of time, we have to assure that no process accesses the resource before all other
+processes do (round robin algorithm). In a circular linked list, we access the elements using the
+head node (similar to head node in singly linked list and doubly linked lists). For readability let
+us assume that the class name of circular linked list is CLLNode.
+
+Counting nodes in a Circular Linked List
+The circular list is accessible through the node marked head. (also called tail). To count the
+nodes, the list has to be traversed from the node marked head, with the help of a dummy node
+current, and stop the counting when current reaches the starting node head. If the list is empty,
+head will be NULL, and in that case set count = 0. Otherwise, set the current pointer to the first
+node, and keep on counting till the current pointer reaches the starting node.
+
+Time Complexity: O(n), for scanning the complete list of size n.
+Space Complexity: O(1), for temporary variable.
+
+Printing the contents of a circular list
+We assume here that the list is being accessed by its head node. Since all the nodes are arranged
+in a circular fashion, the tail node of the list will be the node previous to the head node. Let us
+assume we want to print the contents of the nodes starting with the head node. Print its contents,
+move to the next node and continue printing till we reach the head node again.
+
+Time Complexity: O(n), for scanning the complete list of size n. Space Complexity: O(1), for
+temporary variable.
+
+Inserting a Node at the End of a Circular Linked List
+Let us add a node containing data, at the end of a list (circular list) headed by head. The new
+node will be placed just after the tail node (which is the last node of the list), which means it will
+have to be inserted in between the tail node and the first node.
+•
+
+Create a new node and initially keep its next pointer pointing to itself.
+
+•
+
+Update the next pointer of the new node with the head node and also traverse the list
+to the tail. That means in a circular list we should stop at the node whose next node
+is head.
+
+•
+
+Update the next pointer of the previous node to point to the new node and we get the
+list as shown below.
+
+Time Complexity: O(n), for scanning the complete list of size n. Space Complexity: O(1), for
+temporary variable.
+
+Inserting a Node at the front of a Circular Linked List
+The only difference between inserting a node at the beginning and at the end is that, after inserting
+the new node, we just need to update the pointer. The steps for doing this are given below:
+•
+
+Create a new node and initially keep its next pointer pointing to itself.
+
+•
+
+Update the next pointer of the new node with the head node and also traverse the list
+until the tail. That means in a circular list we should stop at the node which is its
+previous node in the list.
+
+•
+
+Update the previous head node in the list to point to the new node.
+
+•
+
+Make the new node as the head.
+
+Time Complexity: O(n), for scanning the complete list of size n. Space Complexity: O(1), for
+temporary variable.
+
+Deleting the last node in a Circular List
+The list has to be traversed to reach the last but one node. This has to be named as the tail node,
+and its next field has to point to the first node. Consider the following list. To delete the last node
+40, the list has to be traversed till you reach 7. The next field of 7 has to be changed to point to
+60, and this node must be renamed pTail.
+•
+
+Traverse the list and find the tail node and its previous node.
+
+•
+
+Update the tail node’s previous node pointer to point to head.
+
+•
+
+Dispose of the tail node.
+
+Time Complexity: O(n), for scanning the complete list of size n. Space Complexity: O(1), for a
+temporary variable.
+
+Deleting the First Node in a Circular List
+The first node can be deleted by simply replacing the next field of the tail node with the next field
+of the first node.
+•
+
+Find the tail node of the linked list by traversing the list. Tail node is the previous
+node to the head node which we want to delete.
+
+•
+
+Create a temporary node which will point to the head. Also, update the tail nodes
+next pointer to point to next node of head (as shown below).
+
+•
+
+Now, move the head pointer to next node. Create a temporary node which will point
+to head. Also, update the tail nodes next pointer to point to next node of head (as
+shown below).
+
+Time Complexity: O(n), for scanning the complete list of size n. Space Complexity: O(1), for a
+temporary variable.
+
+Applications of Circular List
+Circular linked lists are used in managing the computing resources of a computer. We can use
+circular lists for implementing stacks and queues.
+
+Implementation
+
+3.9 A Memory-efficient Doubly Linked List
+In conventional implementation, we need to keep a forward pointer to the next item on the list and
+a backward pointer to the previous item. That means, elements in doubly linked list
+implementations consist of data, a pointer to the next node and a pointer to the previous node in
+the list as shown below.
+Conventional Node Definition
+
+Recently a journal (Sinha) presented an alternative implementation of the doubly linked list ADT,
+with insertion, traversal and deletion operations. This implementation is based on pointer
+difference. Each node uses only one pointer field to traverse the list back and forth.
+New Node Definition
+
+The ptrdiff pointer field contains the difference between the pointer to the next node and the
+pointer to the previous node. The pointer difference is calculated by using exclusive-or (⊕)
+operation.
+
+The ptrdiff of the start node (head node) is the ⊕ of NULL and next node (next node to head).
+Similarly, the ptrdiff of end node is the ⊕ of previous node (previous to end node) and NULL. As
+an example, consider the following linked list.
+
+In the example above,
+•
+•
+•
+•
+
+The next pointer of A is: NULL ⊕ B
+The next pointer of B is: A ⊕ C
+The next pointer of C is: B ⊕ D
+The next pointer of D is: C ⊕ NULL
+
+Why does it work?
+To find the answer to this question let us consider the properties of ⊕:
+X⊕X=0
+X⊕0=X
+X ⊕ Y = Y ⊕ X (symmetric)
+(X ⊕ Y) ⊕ Z = X ⊕ (Y ⊕ Z) (transitive)
+
+For the example above, let us assume that we are at C node and want to move to B. We know that
+C’s ptrdiff is defined as B ⊕ D. If we want to move to B, performing ⊕ on C’s ptrdiff with D
+would give B. This is due to the fact that,
+
+Similarly, if we want to move to D, then we have to apply ⊕ to C’s ptrdiff with B to give D.
+
+From the above discussion we can see that just by using a single pointer, we can move back and
+forth. A memory-efficient implementation of a doubly linked list is possible with minimal
+compromising of timing efficiency.
+
+3.10 Unrolled Linked Lists
+One of the biggest advantages of linked lists over arrays is that inserting an element at any
+location takes only O(1) time. However, it takes O(n) to search for an element in a linked list.
+There is a simple variation of the singly linked list called unrolled linked lists.
+An unrolled linked list stores multiple elements in each node (let us call it a block for our
+convenience). In each block, a circular linked list is used to connect all nodes.
+
+Assume that there will be no more than n elements in the unrolled linked list at any time. To
+simplify this problem, all blocks, except the last one, should contain exactly
+elements. Thus,
+there will be no more than
+blocks at any time.
+
+Searching for an element in Unrolled Linked Lists
+In unrolled linked lists, we can find the kth element in O(
+1.
+
+):
+
+Traverse the list of blocks to the one that contains the kth node, i.e., the
+It takes O(
+
+) since we may find it by going through no more than
+
+block.
+blocks.
+
+2.
+
+Find the (k mod
+)th node in the circular linked list of this block. It also takes O(
+) since there are no more than
+nodes in a single block.
+
+Inserting an element in Unrolled Linked Lists
+
+When inserting a node, we have to re-arrange the nodes in the unrolled linked list to maintain the
+properties previously mentioned, that each block contains
+nodes. Suppose that we insert a
+node x after the ith node, and x should be placed in the jth block. Nodes in the jth block and in the
+blocks after the jth block have to be shifted toward the tail of the list so that each of them still
+have
+nodes. In addition, a new block needs to be added to the tail if the last block of the list
+is out of space, i.e., it has more than
+nodes.
+
+Performing Shift Operation
+Note that each shift operation, which includes removing a node from the tail of the circular linked
+list in a block and inserting a node to the head of the circular linked list in the block after, takes
+
+only O(1). The total time complexity of an insertion operation for unrolled linked lists is therefore
+O( ); there are at most O( ) blocks and therefore at most O( ) shift operations.
+1.
+
+A temporary pointer is needed to store the tail of A.
+
+2.
+
+In block A, move the next pointer of the head node to point to the second-to-last node, so that
+the tail node of A can be removed.
+
+3.
+
+Let the next pointer of the node, which will be shifted (the tail node of A), point to the tail
+node of B.
+
+4.
+
+Let the next pointer of the head node of B point to the node temp points to.
+
+5.
+
+Finally, set the head pointer of B to point to the node temp points to. Now the node temp
+
+points to becomes the new head node of B.
+
+6.
+
+temp pointer can be thrown away. We have completed the shift operation to move the
+original tail node of A to become the new head node of B.
+
+Performance
+With unrolled linked lists, there are a couple of advantages, one in speed and one in space.
+First, if the number of elements in each block is appropriately sized (e.g., at most the size of one
+cache line), we get noticeably better cache performance from the improved memory locality.
+Second, since we have O(n/m) links, where n is the number of elements in the unrolled linked list
+and m is the number of elements we can store in any block, we can also save an appreciable
+amount of space, which is particularly noticeable if each element is small.
+
+Comparing Doubly Linked Lists and Unrolled Linked Lists
+To compare the overhead for an unrolled list, elements in doubly linked list implementations
+consist of data, a pointer to the next node, and a pointer to the previous node in the list, as shown
+below.
+Assuming we have 4 byte pointers, each node is going to take 8 bytes. But the allocation overhead
+for the node could be anywhere between 8 and 16 bytes. Let’s go with the best case and assume it
+will be 8 bytes. So, if we want to store 1K items in this list, we are going to have 16KB of
+overhead.
+Now, let’s think about an unrolled linked list node (let us call it LinkedBlock). It will look
+something like this:
+
+Therefore, allocating a single node (12 bytes + 8 bytes of overhead) with an array of 100
+elements (400 bytes + 8 bytes of overhead) will now cost 428 bytes, or 4.28 bytes per element.
+Thinking about our 1K items from above, it would take about 4.2KB of overhead, which is close
+to 4x better than our original list. Even if the list becomes severely fragmented and the item arrays
+are only 1/2 full on average, this is still an improvement. Also, note that we can tune the array
+size to whatever gets us the best overhead for our application.
+
+Implementation
+
+3.11 Skip Lists
+Binary trees can be used for representing abstract data types such as dictionaries and ordered
+lists. They work well when the elements are inserted in a random order. Some sequences of
+operations, such as inserting the elements in order, produce degenerate data structures that give
+very poor performance. If it were possible to randomly permute the list of items to be inserted,
+trees would work well with high probability for any input sequence. In most cases queries must
+be answered on-line, so randomly permuting the input is impractical. Balanced tree algorithms rearrange the tree as operations are performed to maintain certain balance conditions and assure
+good performance.
+Skip list is a data structure that can be used as an alternative to balanced binary trees (refer to
+Trees chapter). As compared to a binary tree, skip lists allow quick search, insertion and deletion
+of elements. This is achieved by using probabilistic balancing rather than strictly enforce
+balancing. It is basically a linked list with additional pointers such that intermediate nodes can be
+skipped. It uses a random number generator to make some decisions.
+In an ordinary sorted linked list, search, insert, and delete are in O(n) because the list must be
+scanned node-by-node from the head to find the relevant node. If somehow we could scan down
+the list in bigger steps (skip down, as it were), we would reduce the cost of scanning. This is the
+fundamental idea behind Skip Lists.
+
+Skip Lists with One Level
+
+Skip Lists with Two Level
+
+Skip Lists with Three Levels
+
+This section gives algorithms to search for, insert and delete elements in a dictionary or symbol
+table. The Search operation returns the contents of the value associated with the desired key or
+failure if the key is not present. The Insert operation associates a specified key with a new value
+(inserting the key if it had not already been present). The Delete operation deletes the specified
+key. It is easy to support additional operations such as “find the minimum key” or “find the next
+key”.
+Each element is represented by a node, the level of which is chosen randomly when the node is
+inserted without regard for the number of elements in the data structure. A level i node has i
+forward pointers, indexed 1 through i. We do not need to store the level of a node in the node.
+Levels are capped at some appropriate constant MaxLevel. The level of a list is the maximum
+level currently in the list (or 1 if the list is empty). The header of a list has forward pointers at
+levels one through MaxLevel. The forward pointers of the header at levels higher than the current
+maximum level of the list point to NULL.
+
+Initialization
+An element NIL is allocated and given a key greater than any legal key. All levels of all skip lists
+are terminated with NIL. A new list is initialized so that the the level of the list is equal to 1 and
+all forward pointers of the list’s header point to NIL.
+
+Search for an element
+We search for an element by traversing forward pointers that do not overshoot the node containing
+the element being searched for. When no more progress can be made at the current level of
+forward pointers, the search moves down to the next level. When we can make no more progress
+at level 1, we must be immediately in front of the node that contains the desired element (if it is in
+the list).
+
+Insertion and Deletion Algorithms
+To insert or delete a node, we simply search and splice. A vector update is maintained so that
+when the search is complete (and we are ready to perform the splice), update[i] contains a
+pointer to the rightmost node of level i or higher that is to the left of the location of the
+insertion/deletion. If an insertion generates a node with a level greater than the previous maximum
+
+level of the list, we update the maximum level of the list and initialize the appropriate portions of
+the update vector. After each deletion, we check if we have deleted the maximum element of the
+list and if so, decrease the maximum level of the list.
+
+Choosing a Random Level
+Initially, we discussed a probability distribution where half of the nodes that have level i pointers
+also have level i+1 pointers. To get away from magic constants, we say that a fraction p of the
+nodes with level i pointers also have level i+1 pointers. (for our original discussion, p = 1/2).
+Levels are generated randomly by an algorithm. Levels are generated without reference to the
+number of elements in the list
+
+Performance
+In a simple linked list that consists of n elements, to perform a search n comparisons are required
+in the worst case. If a second pointer pointing two nodes ahead is added to every node, the
+number of comparisons goes down to n/2 + 1 in the worst case. Adding one more pointer to every
+fourth node and making them point to the fourth node ahead reduces the number of comparisons to
+⌈n/2⌉ + 2. If this strategy is continued so that every node with i pointers points to 2 * i – 1 nodes
+ahead, O(logn) performance is obtained and the number of pointers has only doubled (n + n/2 +
+n/4 + n/8 + n/16 + .... = 2n).
+The find, insert, and remove operations on ordinary binary search trees are efficient, O(logn),
+when the input data is random; but less efficient, O(n), when the input data is ordered. Skip List
+performance for these same operations and for any data set is about as good as that of randomlybuilt binary search trees - namely O(logn).
+
+Comparing Skip Lists and Unrolled Linked Lists
+In simple terms, Skip Lists are sorted linked lists with two differences:
+•
+•
+
+The nodes in an ordinary list have one next reference. The nodes in a Skip List have
+many next references (also called forward references).
+The number of forward references for a given node is determined probabilistically.
+
+We speak of a Skip List node having levels, one level per forward reference. The number of
+levels in a node is called the size of the node. In an ordinary sorted list, insert, remove, and find
+operations require sequential traversal of the list. This results in O(n) performance per operation.
+Skip Lists allow intermediate nodes in the list to be skipped during a traversal - resulting in an
+

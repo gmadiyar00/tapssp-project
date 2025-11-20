@@ -2,15 +2,13 @@ use anyhow::{anyhow, Result};
 use std::process::{Command, Stdio};
 use std::path::Path;
 use std::env;
+#[derive(Clone)]
 pub struct LLMConfig {
     pub llama_bin: String,
     pub model_path: String,
     pub max_tokens: usize,
     pub threads: Option<usize>,
-    /// Extra args to pass to the llama.cpp binary (e.g. ["--device","none"]).
-    /// Can be set via the `TAPSSP_LLAMA_ARGS` env var (space-separated).
     pub args: Vec<String>,
-    /// Context size (max tokens) for the model; used to trim context to fit the model.
     pub ctx_size: usize,
 }
 
@@ -19,10 +17,9 @@ impl Default for LLMConfig {
         let home = env::var("HOME").unwrap_or_else(|_| "~".to_string());
         let default_model = format!("{}/.cache/tapssp-project/models/llama-3.1-8b-instruct.Q4_K_M.gguf", home);
         Self {
-            // keep default as a relative path but LLM::new will try env/PATH fallbacks
             llama_bin: "./llama.cpp/main".to_string(),
             model_path: default_model,
-            max_tokens: 256,
+            max_tokens: 512,
             threads: None,
             args: Vec::new(),
             ctx_size: 4096,
@@ -36,7 +33,6 @@ pub struct LLM {
 
 impl LLM {
     pub fn new(cfg: LLMConfig) -> Result<Self> {
-        // Resolve llama binary: check provided path, then env var, then PATH and common locations
         let mut tried_bins = Vec::new();
         let resolved_bin = find_executable(&cfg.llama_bin, &mut tried_bins);
 
@@ -49,7 +45,6 @@ impl LLM {
                 cfg.llama_bin = bin;
                 cfg.model_path = model;
 
-                // If the TAPSSP_LLAMA_ARGS env var is set, parse it into args (simple whitespace split).
                 if let Ok(extra) = env::var("TAPSSP_LLAMA_ARGS") {
                     let parts: Vec<String> = extra
                         .split_whitespace()
@@ -58,6 +53,16 @@ impl LLM {
                     if !parts.is_empty() {
                         cfg.args = parts;
                     }
+                }
+                if cfg.args.is_empty() {
+                        cfg.args = vec![
+                            "--device".to_string(),
+                            "none".to_string(),
+                            "--gpu-layers".to_string(),
+                            "0".to_string(),
+                            "--no-warmup".to_string(),
+                            "--no-perf".to_string(),
+                        ];
                 }
 
                 Ok(LLM { cfg })
@@ -74,8 +79,6 @@ impl LLM {
             return format!("Question: {}\n\nAnswer:", query);
         }
 
-        // Estimate tokens by characters (approx 4 chars per token). This is coarse
-        // but prevents overlong prompts when a true tokenizer isn't available.
         let avg_chars_per_token = 4.0_f32;
         let mut allowed_tokens = if self.cfg.ctx_size > self.cfg.max_tokens {
             self.cfg.ctx_size - self.cfg.max_tokens
@@ -84,7 +87,6 @@ impl LLM {
             64
         };
 
-        // reserve some tokens for prompt overhead
         if allowed_tokens > 64 { allowed_tokens -= 64; }
 
         let mut included = Vec::new();
@@ -123,7 +125,6 @@ impl LLM {
             cmd.arg("-t").arg(t.to_string());
         }
 
-        // Append any extra args the user provided (e.g. --device none)
         for a in &self.cfg.args {
             cmd.arg(a);
         }
@@ -160,7 +161,6 @@ fn find_executable(provided: &str, tried: &mut Vec<String>) -> Option<String> {
         return Some(p);
     }
 
-    // 2) env var TAPSSP_LLAMA_BIN
     if let Ok(env_bin) = env::var("TAPSSP_LLAMA_BIN") {
         let env_bin_exp = expand_home(&env_bin);
         tried.push(env_bin_exp.clone());
