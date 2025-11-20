@@ -163,7 +163,7 @@ impl VectorDB {
         let db: VectorDB = bincode::deserialize_from(file)?;
         Ok(db)
     }
-    
+
     fn tokenize(text: &str) -> Vec<String> {
         lazy_static! {
             static ref STOP_WORDS: HashSet<&'static str> = {
@@ -176,7 +176,7 @@ impl VectorDB {
             };
         }
 
-            let text = text.to_lowercase();
+        let text = text.to_lowercase();
         let re = Regex::new(r"[^\w\s]").unwrap();
         let text = re.replace_all(&text, " ");
         text.split_whitespace()
