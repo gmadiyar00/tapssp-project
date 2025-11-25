@@ -10,6 +10,19 @@ Embed content into vector representations using MiniLM embeddings.
 Query the system using natural language, retrieving relevant content chunks and generating responses via a local LLM (phi-2.Q2_K.gguf).
 The system demonstrates key concepts of modern AI pipelines including vector search, embeddings, prompt augmentation, and integration with local LLMs.
 
+# Issues Faced During Implementation
+
+During the development of this project, I encountered several challenges, particularly related to model performance and hardware limitations:
+
+Performance issues with LLaMA 8B model
+Initially, I used the LLaMA 8B model for text generation. However, on my M1 Mac, the model proved extremely slow. In many cases, the generation process would hang or take an unreasonably long time to produce a response. This issue was primarily due to the high computational requirements of the 8-billion-parameter model, which exceeded the capabilities of my local hardware.
+
+Switching to a lightweight model
+To overcome these performance bottlenecks, I switched to a more lightweight model—specifically, Microsoft’s Phi-2 model. This model provided much faster response times while maintaining reasonable accuracy and capability for the project’s tasks. The switch allowed the system to operate smoothly on the M1 chip without frequent hangs or crashes.
+
+Trade-offs and considerations
+While the lightweight model improved performance, it came with trade-offs in terms of output quality and complexity handling. Careful prompt engineering and optimization were necessary to ensure that the responses remained meaningful and aligned with the project goals.
+
 User Input
    │
    ▼
