@@ -1,0 +1,36 @@
+{
+  "_name_or_path": "./phi-2",
+  "activation_function": "gelu_new",
+  "architecture": {
+    "block_cls": "parallel",
+    "mlp": {
+      "mlp_cls": "fused_mlp"
+    }
+  },
+  "architectures": [
+    "MixFormerSequentialForCausalLM"
+  ],
+  "attn_pdrop": 0.0,
+  "auto_map": {
+    "AutoConfig": "configuration_mixformer_sequential.MixFormerSequentialConfig",
+    "AutoModelForCausalLM": "modeling_mixformer_sequential.MixFormerSequentialForCausalLM"
+  },
+  "embd_pdrop": 0.0,
+  "flash_rotary": false,
+  "fused_dense": false,
+  "initializer_range": 0.02,
+  "layer_norm_epsilon": 1e-05,
+  "model_type": "mixformer-sequential",
+  "n_embd": 2560,
+  "n_head": 32,
+  "n_head_kv": null,
+  "n_inner": null,
+  "n_layer": 32,
+  "n_positions": 2048,
+  "resid_pdrop": 0.0,
+  "rotary_dim": 32,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float32",
+  "transformers_version": "4.35.2",
+  "vocab_size": 51200
+}

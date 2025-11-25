@@ -1,187 +1,163 @@
-use anyhow::Result;
+use anyhow::anyhow;
+use anyhow::{Error, Result};
+use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
-use regex::Regex;
 use serde::{Deserialize, Serialize};
-use std::collections::{HashMap, HashSet};
-use std::fs::File;
-use std::hash::{Hash, Hasher};
-use std::path::Path;
-use std::collections::hash_map::DefaultHasher;
-use bincode;
+use serde_json::Value;
+use std::sync::Mutex;
+use uuid::Uuid;
+use crate::embeddings::get_embeddings;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Document {
-    pub id: String,
-    pub content: String,
-    pub term_freq: HashMap<String, f32>,
-    pub content_hash: String,
+lazy_static! {
+    static ref CONTENTS: Mutex<Vec<Content>> = Mutex::new(Vec::new());
+    static ref VECTOR_INDEXES: Mutex<Vec<VectorIndex>> = Mutex::new(Vec::new());
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct VectorDB {
-    documents: HashMap<String, Document>,
-    postings: HashMap<String, Vec<(String, f32)>>,
-    term_doc_freq: HashMap<String, usize>,
-    doc_hashes: HashSet<String>,
-    doc_count: usize,
+pub struct Id {
+    pub id: String,
 }
 
-impl VectorDB {
-    pub fn new() -> Self {
-        VectorDB {
-            documents: HashMap::new(),
-            postings: HashMap::new(),
-            term_doc_freq: HashMap::new(),
-            doc_hashes: HashSet::new(),
-            doc_count: 0,
-        }
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Content {
+    pub id: Id,
+    pub title: String,
+    pub text: String,
+    pub created_at: DateTime<Utc>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct VectorIndex {
+    pub id: Id,
+    pub content_id: Id,
+    pub content_chunk: String,
+    pub chunk_number: u16,
+    pub metadata: Value,
+    pub vector: Vec<f32>,
+    pub created_at: DateTime<Utc>,
+}
+
+pub async fn insert_content(title: &str, text: &str) -> Result<Content, Error> {
+    let id = Uuid::new_v4().to_string().replace('-', "");
+    let content = Content {
+        id: Id { id: id.clone() },
+        title: title.to_string(),
+        text: text.to_string(),
+        created_at: Utc::now(),
+    };
+    CONTENTS.lock().unwrap().push(content.clone());
+    Ok(content)
+}
+
+pub async fn insert_vector_index(
+    content_id: Id,
+    chunk_number: u16,
+    content_chunk: &str,
+    metadata: Value,
+) -> Result<VectorIndex, Error> {
+    let chunk = content_chunk
+        .chars()
+        .collect::<String>()
+        .trim()
+        .to_string();
+
+    if chunk.is_empty() {
+        return Err(anyhow!("Content chunk is empty"));
     }
 
-    pub fn add_document(&mut self, content: String) -> Result<()> {
-        // compute simple hash to dedupe (DefaultHasher)
-        let mut hasher = DefaultHasher::new();
-        content.hash(&mut hasher);
-        let hash = format!("{:x}", hasher.finish());
+    let id = Uuid::new_v4().to_string().replace('-', "");
 
-        if self.doc_hashes.contains(&hash) {
-            return Ok(());
-        }
-
-        let id = uuid::Uuid::new_v4().to_string();
-
-        let tokens = Self::tokenize(&content);
-        if tokens.is_empty() {
-            return Ok(());
-        }
-
-        let mut counts: HashMap<String, f32> = HashMap::new();
-        for t in tokens.iter() {
-            *counts.entry(t.clone()).or_insert(0.0) += 1.0;
-        }
-        let tokens_count = tokens.len() as f32;
-        for v in counts.values_mut() {
-            *v /= tokens_count;
-        }
-
-        // update postings and df
-        for term in counts.keys() {
-            self.postings
-                .entry(term.clone())
-                .or_insert_with(Vec::new)
-                .push((id.clone(), *counts.get(term).unwrap_or(&0.0)));
-            *self.term_doc_freq.entry(term.clone()).or_insert(0) += 1;
-        }
-
-        let doc = Document {
-            id: id.clone(),
-            content,
-            term_freq: counts,
-            content_hash: hash.clone(),
-        };
-
-        self.documents.insert(id, doc);
-        self.doc_hashes.insert(hash);
-        self.doc_count = self.documents.len();
-
-        Ok(())
-    }
-
-    pub fn finalize_indexing(&mut self) {
-        // no-op for incremental implementation
-    }
-
-    pub fn search_similar(&self, query: &str, top_k: usize) -> Vec<(f32, String)> {
-        let q_tokens = Self::tokenize(query);
-        if q_tokens.is_empty() || self.doc_count == 0 {
-            return Vec::new();
-        }
-
-        let mut q_tf: HashMap<String, f32> = HashMap::new();
-        for t in q_tokens.iter() {
-            *q_tf.entry(t.clone()).or_insert(0.0) += 1.0;
-        }
-        let q_len = q_tokens.len() as f32;
-        for v in q_tf.values_mut() {
-            *v /= q_len;
-        }
-
-        let mut q_weights: HashMap<String, f32> = HashMap::new();
-        for (term, tf) in q_tf.iter() {
-            let df = *self.term_doc_freq.get(term).unwrap_or(&0) as f32;
-            let idf = (1.0 + (self.doc_count as f32) / (1.0 + df)).ln();
-            q_weights.insert(term.clone(), tf * idf);
-        }
-
-        let q_norm = q_weights.values().map(|w| w * w).sum::<f32>().sqrt();
-        if q_norm == 0.0 {
-            return Vec::new();
-        }
-
-        let mut accum: HashMap<String, f32> = HashMap::new();
-        for (term, q_w) in q_weights.iter() {
-            if let Some(postings) = self.postings.get(term) {
-                let df = *self.term_doc_freq.get(term).unwrap_or(&0) as f32;
-                let idf = (1.0 + (self.doc_count as f32) / (1.0 + df)).ln();
-                for (doc_id, doc_tf) in postings.iter() {
-                    let contrib = (*q_w) * (doc_tf * idf);
-                    *accum.entry(doc_id.clone()).or_insert(0.0) += contrib;
-                }
+    // Compute embeddings for the chunk and store the vector.
+    let emb = get_embeddings(&chunk).map_err(|e| anyhow!("Unable to compute embeddings: {}", e))?;
+    let vector: Vec<f32> = match emb.to_vec1() {
+        Ok(v) => v,
+        Err(_) => {
+            let mat = emb.to_vec2().map_err(|e| anyhow!("Unable to convert embeddings to Vec<f32>: {}", e))?;
+            if mat.is_empty() {
+                return Err(anyhow!("Embeddings conversion produced empty matrix"));
             }
+            mat.into_iter().next().unwrap()
         }
+    };
 
-        let mut results: Vec<(f32, String)> = Vec::new();
-        for (doc_id, numer) in accum.into_iter() {
-            if let Some(doc) = self.documents.get(&doc_id) {
-                let mut doc_norm_sq = 0.0_f32;
-                for (term, tf_doc) in doc.term_freq.iter() {
-                    let df = *self.term_doc_freq.get(term).unwrap_or(&0) as f32;
-                    let idf = (1.0 + (self.doc_count as f32) / (1.0 + df)).ln();
-                    let w = tf_doc * idf;
-                    doc_norm_sq += w * w;
-                }
-                let doc_norm = doc_norm_sq.sqrt();
-                if doc_norm == 0.0 {
-                    continue;
-                }
-                let score = numer / (q_norm * doc_norm);
-                results.push((score, doc.content.clone()));
+    let vector_index = VectorIndex {
+        id: Id { id: id.clone() },
+        content_id: content_id.clone(),
+        content_chunk: chunk,
+        chunk_number,
+        metadata,
+        vector,
+        created_at: Utc::now(),
+    };
+
+    VECTOR_INDEXES.lock().unwrap().push(vector_index.clone());
+
+    Ok(vector_index)
+}
+
+pub async fn smart_insert_content(title: &str, text: &str, metadata: Value) -> Result<Content, Error> {
+    let content = insert_content(title, text).await?;
+
+    // Split by 300-character chunks
+    let chunk_size = 300;
+    let mut offset = 0;
+    let chars: Vec<char> = text.chars().collect();
+
+    while offset < chars.len() {
+        let end = (offset + chunk_size).min(chars.len());
+        let chunk: String = chars[offset..end].iter().collect();
+
+        insert_vector_index(
+            content.id.clone(),
+            (offset / chunk_size) as u16,
+            &chunk,
+            metadata.clone()
+        ).await?;
+
+        offset = end;
+    }
+
+    Ok(content)
+}
+
+pub async fn retrieve(query: &str) -> Result<Vec<VectorIndex>, Error> {
+    // Compute embedding for query (robust conversion)
+    let qemb = get_embeddings(query).map_err(|e| anyhow!("Failed to embed query: {}", e))?;
+    let query_emb: Vec<f32> = match qemb.to_vec1() {
+        Ok(v) => v,
+        Err(_) => {
+            let mat = qemb.to_vec2().map_err(|e| anyhow!("Embedding vector convert error: {}", e))?;
+            if mat.is_empty() {
+                return Err(anyhow!("Embedding vector convert error: empty matrix"));
             }
+            mat.into_iter().next().unwrap()
         }
+    };
 
-        results.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
-        results.into_iter().take(top_k).collect()
+    let indexes = VECTOR_INDEXES.lock().unwrap();
+    let mut scored: Vec<(f32, VectorIndex)> = indexes
+        .iter()
+        .map(|v| {
+            let score = cosine_similarity(&query_emb, &v.vector);
+            (score, v.clone())
+        })
+        .collect();
+
+    scored.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
+
+    // Take top 4
+    Ok(scored.into_iter().take(4).map(|x| x.1).collect())
+}
+
+fn cosine_similarity(a: &[f32], b: &[f32]) -> f32 {
+    let mut dot = 0.0;
+    let mut norm_a = 0.0;
+    let mut norm_b = 0.0;
+    for i in 0..a.len() {
+        dot += a[i] * b[i];
+        norm_a += a[i] * a[i];
+        norm_b += b[i] * b[i];
     }
-
-    pub fn save<P: AsRef<Path>>(&self, path: P) -> Result<()> {
-        let file = File::create(path)?;
-        bincode::serialize_into(file, self)?;
-        Ok(())
-    }
-
-    pub fn load<P: AsRef<Path>>(path: P) -> Result<Self> {
-        let file = File::open(path)?;
-        let db: VectorDB = bincode::deserialize_from(file)?;
-        Ok(db)
-    }
-
-    fn tokenize(text: &str) -> Vec<String> {
-        lazy_static! {
-            static ref STOP_WORDS: HashSet<&'static str> = {
-                let words = vec![
-                    "a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
-                    "has", "he", "in", "is", "it", "its", "of", "on", "that", "the",
-                    "to", "was", "were", "will", "with"
-                ];
-                words.into_iter().collect()
-            };
-        }
-
-        let text = text.to_lowercase();
-        let re = Regex::new(r"[^\w\s]").unwrap();
-        let text = re.replace_all(&text, " ");
-        text.split_whitespace()
-            .filter(|&token| !STOP_WORDS.contains(token))
-            .map(|s| s.to_string())
-            .collect()
-    }
+    if norm_a == 0.0 || norm_b == 0.0 { return 0.0; }
+    dot / (norm_a.sqrt() * norm_b.sqrt())
 }
