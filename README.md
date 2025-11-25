@@ -4,12 +4,25 @@ Student: Gulbanu Madiyarova #
 Student ID: 2105242
 Professor: Corin Pitcher
 
-Project Overview:
+# Project Overview:
 The TAPSSP Project implements a lightweight Retrieval-Augmented Generation (RAG) system in Rust. This project allows users to:
 Ingest content from direct input, text files, or PDFs.
 Embed content into vector representations using MiniLM embeddings.
 Query the system using natural language, retrieving relevant content chunks and generating responses via a local LLM (phi-2.Q2_K.gguf).
 The system demonstrates key concepts of modern AI pipelines including vector search, embeddings, prompt augmentation, and integration with local LLMs.
+
+# Issues Faced During Implementation
+
+During the development of this project, I encountered several challenges, particularly related to model performance and hardware limitations:
+
+Performance issues with LLaMA 8B model
+Initially, I used the LLaMA 8B model for text generation. However, on my M1 Mac, the model proved extremely slow. In many cases, the generation process would hang or take an unreasonably long time to produce a response. This issue was primarily due to the high computational requirements of the 8-billion-parameter model, which exceeded the capabilities of my local hardware.
+
+Switching to a lightweight model
+To overcome these performance bottlenecks, I switched to a more lightweight model—specifically, Microsoft’s Phi-2 model. This model provided much faster response times while maintaining reasonable accuracy and capability for the project’s tasks. The switch allowed the system to operate smoothly on the M1 chip without frequent hangs or crashes.
+
+Trade-offs and considerations
+While the lightweight model improved performance, it came with trade-offs in terms of output quality and complexity handling. Careful prompt engineering and optimization were necessary to ensure that the responses remained meaningful and aligned with the project goals.
 
 User Input
    │
@@ -19,7 +32,7 @@ User Input
    ▼
 Relevant Chunks → [LLM Prompt Builder] → [LLM Subprocess] → Response
 
-Components:
+# Components:
 
 main.rs – CLI interface using clap, supporting:
 
@@ -61,7 +74,7 @@ ingest.rs – Ingests content from CLI, text files, or PDFs.
 
 - Calls smart_insert_content to store content in vector DB.
 
-Key Coding Decisions
+# Key Coding Decisions
 1. In-Memory DB vs Persistent Storage
     * Chose lazy_static + Mutex for in-memory storage to simplify concurrency and avoid external DB setup.
     * Ideal for a school project; can scale to persistent DB later.
@@ -83,7 +96,7 @@ Key Coding Decisions
     * build_prompt inserts top-matching content chunks as context before query.
     * Ensures the LLM leverages retrieved knowledge rather than hallucinating.
 
-Usage
+# Usage
 Setup
 1. Clone the repository:
 
@@ -111,19 +124,16 @@ cargo run -- upload text /path/to/file.txt
 
 cargo run -- upload pdf /path/to/file.pdf
 
-Example
+# Example
 
 tapssp-project remember "Algorithm is a step-by-step procedure."
 tapssp-project ask "What is an algorithm?"
-# Output: The algorithm is a method of solving a problem that involves following steps.
+Output: The algorithm is a method of solving a problem that involves following steps.
 
-Future Improvements
+# Future Improvements
 * Add persistent vector database (e.g., SQLite, Pinecone).
 * Support larger LLM models via optimized Rust bindings.
 * Add streaming responses from LLM.
 * Handle multi-language content ingestion.
 * Add command to delete or update content in vector DB.
-
-This README explains all major design and coding decisions, the architecture, and how to use the project, which should meet school project requirements.
-
 Project Description Page: https://fpl.cs.depaul.edu/cpitcher/courses/csc363/worksheets/project.html#
