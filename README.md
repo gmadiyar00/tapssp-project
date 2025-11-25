@@ -3,7 +3,7 @@ Final Project #
 Student: Gulbanu Madiyarova #
 Student ID: 2105242
 
-Project Overview:
+# Project Overview:
 The TAPSSP Project implements a lightweight Retrieval-Augmented Generation (RAG) system in Rust. This project allows users to:
 Ingest content from direct input, text files, or PDFs.
 Embed content into vector representations using MiniLM embeddings.
@@ -18,7 +18,7 @@ User Input
    ▼
 Relevant Chunks → [LLM Prompt Builder] → [LLM Subprocess] → Response
 
-Components:
+# Components:
 
 main.rs – CLI interface using clap, supporting:
 
@@ -60,7 +60,7 @@ ingest.rs – Ingests content from CLI, text files, or PDFs.
 
 - Calls smart_insert_content to store content in vector DB.
 
-Key Coding Decisions
+# Key Coding Decisions
 1. In-Memory DB vs Persistent Storage
     * Chose lazy_static + Mutex for in-memory storage to simplify concurrency and avoid external DB setup.
     * Ideal for a school project; can scale to persistent DB later.
@@ -82,7 +82,7 @@ Key Coding Decisions
     * build_prompt inserts top-matching content chunks as context before query.
     * Ensures the LLM leverages retrieved knowledge rather than hallucinating.
 
-Usage
+# Usage
 Setup
 1. Clone the repository:
 
@@ -110,19 +110,16 @@ cargo run -- upload text /path/to/file.txt
 
 cargo run -- upload pdf /path/to/file.pdf
 
-Example
+# Example
 
 tapssp-project remember "Algorithm is a step-by-step procedure."
 tapssp-project ask "What is an algorithm?"
-# Output: The algorithm is a method of solving a problem that involves following steps.
+Output: The algorithm is a method of solving a problem that involves following steps.
 
-Future Improvements
+# Future Improvements
 * Add persistent vector database (e.g., SQLite, Pinecone).
 * Support larger LLM models via optimized Rust bindings.
 * Add streaming responses from LLM.
 * Handle multi-language content ingestion.
 * Add command to delete or update content in vector DB.
-
-This README explains all major design and coding decisions, the architecture, and how to use the project, which should meet school project requirements.
-
 Project Description Page: https://fpl.cs.depaul.edu/cpitcher/courses/csc363/worksheets/project.html#
