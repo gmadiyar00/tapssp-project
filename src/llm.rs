@@ -75,8 +75,6 @@ impl LLM {
         format!("You are a helpful AI assistant. Answer this question: {}\n\nAnswer:", query.trim())
     }
 
-    /// Truncate a slice of `VectorIndex` references to a maximum character budget.
-    /// Returns a String containing concatenated references that fit within `max_chars`.
     fn truncate_references_to_budget(refs: &[VectorIndex], max_chars: usize) -> String {
         let mut ctx = String::new();
         for (i, r) in refs.iter().enumerate() {
@@ -94,9 +92,7 @@ impl LLM {
         query: &str,
         references: Option<&[VectorIndex]>
     ) -> Result<String> {
-        // Truncate context to a safe character budget to avoid hitting token limits.
-        // Use a conservative default (e.g. 4k chars) but keep this simple — fine-grained
-        // token accounting can be added later.
+
         let max_context_chars = 4_000usize;
 
         let prompt = if let Some(refs) = references {

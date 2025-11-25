@@ -30,7 +30,7 @@ tapssp-project remember "Data structures and algorithms are closely related but 
 
 Ask - tapssp-project ask "<your question>"
 
-tapssp-project ask "What is an algorithm??"   
+tapssp-project ask "What is an algorithm??"
 
 tapssp-project ask "Explain the difference between data structures and algorithms."
 
@@ -40,7 +40,3 @@ tapssp-project ask "Why is a RAG system useful compared to a normal language mod
 
 tapssp-project ask "What components make up a typical RAG pipeline?"
 
-tapssp-project ask "What makes Rust a safe systems programming language?"
-
-echo $TAPSSP_PHI_PATH
-echo $TAPSSP_LLAMA_BIN

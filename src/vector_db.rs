@@ -131,7 +131,6 @@ pub async fn smart_insert_content(title: &str, text: &str, metadata: HashMap<Str
 }
 
 pub async fn retrieve(query: &str) -> Result<Vec<VectorIndex>, Error> {
-    // Compute embedding for query (robust conversion)
     let qemb = get_embeddings(query).map_err(|e| anyhow!("Failed to embed query: {}", e))?;
     let query_emb: Vec<f32> = match qemb.to_vec1() {
         Ok(v) => v,
