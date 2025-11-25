@@ -1,7 +1,8 @@
 # RAG System (Retrieval-Augmented Generation)
-Final Project #
+Final Project # CSC 363
 Student: Gulbanu Madiyarova #
 Student ID: 2105242
+Professor: Corin Pitcher
 
 Project Overview:
 The TAPSSP Project implements a lightweight Retrieval-Augmented Generation (RAG) system in Rust. This project allows users to:

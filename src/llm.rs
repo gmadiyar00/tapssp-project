@@ -21,7 +21,7 @@ impl Default for LLMConfig {
         let model_path = env::var("TAPSSP_PHI_PATH")
             .unwrap_or_else(|_| "/Users/gulbanumadiyarova/Downloads/Textbooks/tapssp-project/llama.cpp/models/phi-2.Q2_K.gguf".into());
 
-        let default_bin = "/opt/homebrew/bin/llama-simple".to_string();
+        let default_bin = "/Users/gulbanumadiyarova/Downloads/Textbooks/tapssp-project/llama.cpp/build/bin/llama-cli".to_string();
         let bin = env::var("TAPSSP_LLAMA_BIN").unwrap_or(default_bin);
 
         let threads = env::var("TAPSSP_LLAMA_THREADS")
@@ -32,7 +32,7 @@ impl Default for LLMConfig {
         let max_tokens = env::var("TAPSSP_LLAMA_MAX_TOKENS")
             .ok()
             .and_then(|s| s.parse().ok())
-            .unwrap_or(256);
+            .unwrap_or(1024);
 
         let timeout_secs = env::var("TAPSSP_LLAMA_TIMEOUT")
             .ok()
@@ -67,12 +67,26 @@ impl LLM {
                     ctx.push_str(&format!("Reference {}:\n{}\n\n", i + 1, r.content_chunk));
                 }
                 return format!(
-                    "You are a helpful assistant. Use the context below to answer concisely.\n\nContext:\n{}\nQuestion: {}\nAnswer:",
+                    "You are a helpful AI assistant. Answer the question using the provided context. Be concise and accurate.\n\nContext:\n{}\n\nQuestion: {}\n\nAnswer:",
                     ctx, query
                 );
             }
         }
-        format!("Question: {}\nAnswer:", query.trim())
+        format!("You are a helpful AI assistant. Answer this question: {}\n\nAnswer:", query.trim())
+    }
+
+    /// Truncate a slice of `VectorIndex` references to a maximum character budget.
+    /// Returns a String containing concatenated references that fit within `max_chars`.
+    fn truncate_references_to_budget(refs: &[VectorIndex], max_chars: usize) -> String {
+        let mut ctx = String::new();
+        for (i, r) in refs.iter().enumerate() {
+            let piece = format!("Reference {}:\n{}\n\n", i + 1, r.content_chunk);
+            if ctx.len() + piece.len() > max_chars {
+                break;
+            }
+            ctx.push_str(&piece);
+        }
+        ctx
     }
 
     pub async fn generate_with_context(
@@ -80,7 +94,26 @@ impl LLM {
         query: &str,
         references: Option<&[VectorIndex]>
     ) -> Result<String> {
-        let prompt = self.build_prompt(query, references);
+        // Truncate context to a safe character budget to avoid hitting token limits.
+        // Use a conservative default (e.g. 4k chars) but keep this simple — fine-grained
+        // token accounting can be added later.
+        let max_context_chars = 4_000usize;
+
+        let prompt = if let Some(refs) = references {
+            if !refs.is_empty() {
+                let ctx = Self::truncate_references_to_budget(refs, max_context_chars);
+                format!(
+                    "You are a helpful AI assistant. Answer the question using the provided context. Be concise and accurate.\n\nContext:\n{}\n\nQuestion: {}\n\nAnswer:",
+                    ctx,
+                    query
+                )
+            } else {
+                self.build_prompt(query, references)
+            }
+        } else {
+            self.build_prompt(query, references)
+        };
+
         self.generate_via_subprocess(&prompt).await
     }
 
@@ -102,14 +135,16 @@ impl LLM {
         let n_str = self.cfg.max_tokens.to_string();
         let timeout_secs = self.cfg.timeout_secs;
 
-        // Run blocking
         let handle = task::spawn_blocking(move || {
             let out = Command::new(&bin)
+                .current_dir("/Users/gulbanumadiyarova/Downloads/Textbooks/tapssp-project")
+                .env("GGML_METAL_DISABLE", "1")
                 .arg("-m").arg(&model)
                 .arg("-n").arg(&n_str)
+                .arg("-ngl").arg("0")
                 .arg("--threads").arg(threads.to_string())
                 .arg("--color")
-                .arg(&prompt_owned)
+                .arg("-p").arg(&prompt_owned)
                 .output()
                 .map_err(|e| anyhow!("failed to spawn llama subprocess: {}", e))?;
 
@@ -134,26 +169,16 @@ impl LLM {
 }
 
 fn strip_prompt_from_llama_output(prompt: &str, stdout: &str) -> String {
-    if let Some(idx) = stdout.rfind("Answer:") {
+    if let Some(idx) = stdout.find("Answer:") {
         return stdout[idx + "Answer:".len()..].trim().to_string();
     }
-    if let Some(idx) = stdout.rfind("Assistant:") {
+    if let Some(idx) = stdout.find("Assistant:") {
         return stdout[idx + "Assistant:".len()..].trim().to_string();
     }
 
-    stdout.replacen(prompt, "", 1).trim().to_string();
-
-    let tail = if prompt.len() > 80 {
-        &prompt[prompt.len() - 80..]
-    } else {
-        prompt
-    };
-
-    if let Some(idx) = stdout.rfind(tail) {
-        return stdout[idx + tail.len()..].trim().to_string();
-    }
-
-    stdout.trim().to_string()
+    let without_prompt = stdout.replacen(prompt, "", 1);
+    let stripped = without_prompt.trim();
+    stripped.to_string()
 }
 
 pub async fn answer_with_context(

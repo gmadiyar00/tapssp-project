@@ -1,0 +1,46 @@
+Help - tapssp-project --help
+
+
+Upload - tapssp-project upload 
+
+tapssp-project upload text <path>
+
+tapssp-project upload text /Users/gulbanumadiyarova/Downloads/Textbooks/tapssp-project/docs/ragdocs.txt
+
+tapssp-project upload pdf <path>
+
+tapssp-project upload pdf /Users/gulbanumadiyarova/Downloads/Textbooks/Books/books/HeadFirstJava.pdf
+
+
+Remember  - tapssp-project remember 
+tapssp-project remember "Computer science is the study of how information can be represented, processed, and transformed using computational systems, and it forms the conceptual foundation behind nearly every modern technology. At its core, computer science is built on fundamental principles such as algorithms (step-by-step procedures for solving problems), data structures (ways of organizing information efficiently), computational theory (understanding what can or cannot be computed), computer architecture (how hardware executes instructions), and programming languages (formal systems for expressing computations). From these foundations, computer science branches into many specialized directions that shape both research and industry: artificial intelligence and machine learning, where computers learn from data and make decisions; systems and infrastructure, including operating systems, networking, distributed systems, and databases that power the internet and large-scale applications; software engineering, which ensures that complex programs are built reliably and maintainably; cybersecurity, which protects systems and data from threats; human-computer interaction, which focuses on how people use technology and how to design intuitive interfaces; graphics and visualization, enabling everything from video games to scientific simulations; and emerging fields like quantum computing and bioinformatics that merge computing with advanced mathematics, physics, and biology. Together, these areas illustrate that computer science is not just about coding—it is about solving problems, designing efficient solutions, understanding computation at every level, and creating new technologies that shape the world."
+
+tapssp-project remember "Rust is a modern systems programming language designed to provide memory safety, high performance, and fearless concurrency without relying on garbage collection. Rust’s core innovation is its ownership and borrowing model, which ensures that data races, dangling pointers, and memory leaks are caught at compile time rather than at runtime. This makes Rust especially powerful for building reliable, low-level systems such as operating systems, servers, command-line tools, and real-time applications. Rust combines expressive high-level syntax with extremely predictable performance characteristics, making it attractive to engineers who want the safety of languages like Python or Java but the speed and control of C and C++. Its rich type system, pattern matching, traits, generics, and error-handling mechanisms encourage writing clean, maintainable code. As a result, Rust has become widely used in performance-critical domains including web infrastructure, distributed systems, machine learning runtimes, blockchain platforms, and embedded computing."
+
+tapssp-project remember "A Retrieval-Augmented Generation (RAG) system improves an AI model’s accuracy and grounding by combining a traditional language model with an external knowledge base. Instead of relying solely on the model’s internal parameters, RAG pipelines retrieve relevant documents, text chunks, or embeddings from a vector database whenever a question is asked. These retrieved pieces of information are then fed into the prompt, guiding the model to produce responses that are more factual, context-aware, and tied to a specific dataset. RAG systems are especially valuable in scenarios where accuracy and domain-specific knowledge matter—such as education, research tools, customer service, enterprise knowledge platforms, and personal assistants. By decoupling knowledge from the model itself, RAG enables fast updates, reduces hallucination, and avoids retraining large models whenever new information is added. In practice, a RAG system typically includes a document ingester, a text splitter, an embedding model, a vector store, and a generation model that uses retrieved chunks to produce grounded answers."
+
+tapssp-project remember "Rust is becoming increasingly important in the AI and RAG ecosystem because it offers both speed and safety—two features that are crucial for building robust retrieval pipelines, efficient inference runtimes, and fast search engines. Rust’s performance allows vector operations, embedding calculations, and file I/O to run closer to the metal, giving RAG systems lower latency compared to many Python-based implementations. Modern Rust crates such as tokenizers, llm, tch-rs, burn, and rust-bert allow developers to load models, process text, run inference, or integrate GPU acceleration. Its strong ecosystem for concurrency (Tokio, Rayon, async/await) also makes Rust ideal for building parallel retrieval pipelines or batching embeddings. Additionally, Rust binaries are small, portable, and memory-efficient—perfect for CLI tools, edge devices, or academic projects where reliability is a priority. As AI systems push toward more production-grade environments, Rust’s combination of performance and safety positions it as one of the most promising languages for future AI infrastructure and RAG architectures."
+
+tapssp-project remember "Data structures are organized ways of storing, managing, and accessing data efficiently. They define how data is arranged in memory and what operations can be performed on it. Common examples include arrays, linked lists, stacks, queues, hash maps, trees, and graphs. Each data structure is designed with different strengths: some provide fast lookups, others excel at fast insertions or deletions, while some represent hierarchical or relational data. The choice of data structure has a direct impact on the performance and complexity of a program. Understanding data structures is fundamental to building software that is scalable, optimized, and capable of handling real-world problems."
+
+tapssp-project remember "Algorithms are step-by-step procedures or rules designed to solve a problem or perform a specific task. An algorithm takes input, processes it according to a well-defined sequence of operations, and produces an output. Examples include sorting algorithms like quicksort or mergesort, searching algorithms like binary search, graph algorithms such as Dijkstra’s shortest path, and optimization or dynamic programming techniques. A good algorithm is efficient, correct, and optimized for time and space usage. Algorithms form the backbone of computer science because they determine how effectively a program performs, regardless of the programming language or hardware environment."
+
+tapssp-project remember "Data structures and algorithms are closely related but serve different purposes. A data structure organizes and stores data, while an algorithm processes that data to perform a task or solve a problem. Data structures focus on how data is arranged—like in lists, trees, or graphs—whereas algorithms describe how to manipulate that data—such as searching, sorting, or traversing. Together, they form the foundation of efficient computing: a good algorithm often depends on choosing the right data structure, and a data structure is useful only when paired with algorithms that operate on it effectively."
+
+
+Ask - tapssp-project ask "<your question>"
+
+tapssp-project ask "What is an algorithm??"   
+
+tapssp-project ask "Explain the difference between data structures and algorithms."
+
+tapssp-project ask "What is a Retrieval-Augmented Generation (RAG) system?"
+
+tapssp-project ask "Why is a RAG system useful compared to a normal language model?"
+
+tapssp-project ask "What components make up a typical RAG pipeline?"
+
+tapssp-project ask "What makes Rust a safe systems programming language?"
+
+echo $TAPSSP_PHI_PATH
+echo $TAPSSP_LLAMA_BIN

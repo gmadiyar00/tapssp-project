@@ -3,7 +3,9 @@ use anyhow::{Error, Result};
 use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use std::collections::HashMap;
+use std::fs;
+use std::path::Path;
 use std::sync::Mutex;
 use uuid::Uuid;
 use crate::embeddings::get_embeddings;
@@ -32,9 +34,15 @@ pub struct VectorIndex {
     pub content_id: Id,
     pub content_chunk: String,
     pub chunk_number: u16,
-    pub metadata: Value,
+    pub metadata: HashMap<String, String>,
     pub vector: Vec<f32>,
     pub created_at: DateTime<Utc>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct PersistedData {
+    contents: Vec<Content>,
+    vector_indexes: Vec<VectorIndex>,
 }
 
 pub async fn insert_content(title: &str, text: &str) -> Result<Content, Error> {
@@ -46,6 +54,7 @@ pub async fn insert_content(title: &str, text: &str) -> Result<Content, Error> {
         created_at: Utc::now(),
     };
     CONTENTS.lock().unwrap().push(content.clone());
+    save_to_disk()?;
     Ok(content)
 }
 
@@ -53,7 +62,7 @@ pub async fn insert_vector_index(
     content_id: Id,
     chunk_number: u16,
     content_chunk: &str,
-    metadata: Value,
+    metadata: HashMap<String, String>,
 ) -> Result<VectorIndex, Error> {
     let chunk = content_chunk
         .chars()
@@ -95,7 +104,7 @@ pub async fn insert_vector_index(
     Ok(vector_index)
 }
 
-pub async fn smart_insert_content(title: &str, text: &str, metadata: Value) -> Result<Content, Error> {
+pub async fn smart_insert_content(title: &str, text: &str, metadata: HashMap<String, String>) -> Result<Content, Error> {
     let content = insert_content(title, text).await?;
 
     // Split by 300-character chunks
@@ -117,6 +126,7 @@ pub async fn smart_insert_content(title: &str, text: &str, metadata: Value) -> R
         offset = end;
     }
 
+    save_to_disk()?;
     Ok(content)
 }
 
@@ -160,4 +170,42 @@ fn cosine_similarity(a: &[f32], b: &[f32]) -> f32 {
     }
     if norm_a == 0.0 || norm_b == 0.0 { return 0.0; }
     dot / (norm_a.sqrt() * norm_b.sqrt())
+}
+
+fn get_db_path() -> String {
+    "data/vector_db.bin".to_string()
+}
+
+pub fn load_from_disk() -> Result<()> {
+    let path = get_db_path();
+    if !Path::new(&path).exists() {
+        return Ok(()); // No file to load, that's fine
+    }
+
+    let data = fs::read(&path)?;
+    let persisted: PersistedData = bincode::deserialize(&data)?;
+
+    let mut contents = CONTENTS.lock().unwrap();
+    let mut indexes = VECTOR_INDEXES.lock().unwrap();
+
+    *contents = persisted.contents;
+    *indexes = persisted.vector_indexes;
+
+    Ok(())
+}
+
+pub fn save_to_disk() -> Result<()> {
+    let contents = CONTENTS.lock().unwrap().clone();
+    let vector_indexes = VECTOR_INDEXES.lock().unwrap().clone();
+
+    let persisted = PersistedData {
+        contents,
+        vector_indexes,
+    };
+
+    let data = bincode::serialize(&persisted)?;
+    fs::create_dir_all("data")?;
+    fs::write(get_db_path(), data)?;
+
+    Ok(())
 }

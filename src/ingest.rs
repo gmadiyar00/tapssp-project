@@ -2,7 +2,7 @@ use crate::vector_db::{smart_insert_content};
 // use crate::whisper::whisper_decode;
 use anyhow::Context;
 use clap::ValueEnum;
-use serde_json::json;
+use std::collections::HashMap;
 use chrono::{Utc};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -15,15 +15,17 @@ pub enum IngestType {
 }
 
 pub async fn ingest_via_cli(content: &str) -> anyhow::Result<()> {
+    let mut metadata = HashMap::new();
+    metadata.insert("source".to_string(), "direct insert".to_string());
+
     smart_insert_content(
         &format!("Direct insert on {}", Utc::now().date_naive()),
         &content,
-        json!({
-            "source": "direct insert",
-            // "time": Utc::now(),
-        }),
+        metadata,
     )
     .await?;
+
+    println!("Text is remembered");
     Ok(())
 }
 
@@ -40,13 +42,13 @@ pub async fn ingest_via_pdf_file(path: PathBuf) -> anyhow::Result<()> {
 
     println!("Processing pdf from {}", display);
 
+    let mut metadata = HashMap::new();
+    metadata.insert("source".to_string(), file_name.to_string());
+
     let content = smart_insert_content(
         &format!("Contents of {:?}", file_name),
         &out,
-        json!({
-            "source": file_name,
-            // "upload_time": Utc::now(),
-        }),
+        metadata,
     )
     .await?;
 
@@ -76,13 +78,13 @@ pub async fn ingest_via_txt_file(path: PathBuf) -> anyhow::Result<()> {
         .collect::<Vec<String>>()
         .join("\n");
 
+    let mut metadata = HashMap::new();
+    metadata.insert("source".to_string(), file_name.to_string());
+
     let content = smart_insert_content(
         &format!("Contents of {:?}", file_name),
         &content,
-        json!({
-            "source": file_name,
-            // "upload_time": Utc::now(),
-        }),
+        metadata,
     )
     .await?;
 

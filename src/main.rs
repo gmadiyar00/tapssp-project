@@ -9,6 +9,8 @@ use crate::ingest::ingest_via_cli;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    vector_db::load_from_disk()?;
+
     let args = cli::Cli::parse();
 
     match args.command {
