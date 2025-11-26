@@ -3,6 +3,11 @@ Final Project #
 Student: Gulbanu Madiyarova #
 Student ID: 2105242
 
+# Deliverables
+Code base in a GitHub repository that you share with me (GitHub username: bcdroid).
+Documentation outlining your system - README.md
+Video demonstration of your system - video_demonstration/csc_363_final_project_Demo_Gulbanu_Madiyarova_compressed.mp4
+
 # Project Overview:
 The TAPSSP Project implements a lightweight Retrieval-Augmented Generation (RAG) system in Rust. This project allows users to:
 Ingest content from direct input, text files, or PDFs.
